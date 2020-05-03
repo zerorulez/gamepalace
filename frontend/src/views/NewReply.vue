@@ -5,7 +5,7 @@
         <form @submit.prevent="newReply()">
           <div class="form-group">
             <label for="description">Description</label>
-            <textarea class="form-control" id="description" rows="3" v-model="post.description" required></textarea>
+            <textarea class="form-control" id="description" rows="3" v-model="post.description"></textarea>
           </div>
           <div class="form-group">
             <label for="picture">Picture</label>
