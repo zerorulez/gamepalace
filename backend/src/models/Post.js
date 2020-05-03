@@ -10,17 +10,24 @@ const PostSchema = new Schema({
         required: true
     },
     filename: {
-        type: String,
-        required: true
+        type: String
+    },
+    embed: {
+        type: String
     },
     replys: [
         {
             description: {
                 type: String,
-                required: true
             },
             filename: {
                 type: String
+            },
+            embed: {
+                type: String
+            },
+            createdAt: {
+                type: Date
             },
         }
     ]

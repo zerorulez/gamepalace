@@ -4,9 +4,14 @@
       <div class="post">
         <div class="post-header">
           <strong class="d-block">{{ post.title }}</strong>
-          <p class="date text-secondary">{{ post.createdAt }}</p>
+          <p class="date text-secondary">{{ post.createdAt | moment("dddd, MMMM Do YYYY, h:mm:ss a") }}</p>
         </div>
-        <img :src="url + post.filename" alt="" class="img-fluid my-2 rounded">
+        <div class="media my-2">
+          <img :src="url + post.filename" alt="" class="img-fluid" v-if="post.filename">
+          <div class="embed-responsive embed-responsive-16by9" v-if="post.embed">
+            <iframe class="embed-responsive-item" :src="post.embed" allowfullscreen autoplay="false"></iframe>
+          </div>
+        </div>
         <p class="description">{{ post.description }}</p>
       </div>
       <div class="stats text-secondary">
@@ -39,9 +44,15 @@ export default {
       flex-direction: column;
       overflow-wrap: break-word;
 
-      img {
-        max-height: 300px;
-        margin: auto;
+      .media {
+        display: flex;
+        justify-content: center;
+        img {
+          max-height: 300px;
+        }
+        div {
+          max-width: 600px;
+        }
       }
 
       .post-header {

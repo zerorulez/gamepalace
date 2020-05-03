@@ -8,8 +8,19 @@
             <textarea class="form-control" id="description" rows="3" v-model="post.description"></textarea>
           </div>
           <div class="form-group">
+            <label for="type">Type</label>
+            <select class="form-control" id="type" v-model="type" @change="clear()">
+              <option value="p">Picture</option>
+              <option value="e">Embed (Youtube & Twitch)</option>
+            </select>
+          </div>
+          <div class="form-group" v-if="type == 'p'">
             <label for="picture">Picture</label>
-            <input type="file" class="form-control-file" id="picture" @change="processFile($event)">
+            <input type="file" class="form-control-file" id="picture" @change="processFile($event)" :required="post.description == ''">
+          </div>
+          <div class="form-group" v-if="type == 'e'">
+            <label for="embed">Embed</label>
+            <input type="text" class="form-control" id="embed" v-model="post.embed" :required="post.description == ''">
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -26,7 +37,11 @@ export default {
   name: 'NewReply',
   data() {
     return {
-      post: Object,
+      post: {
+        description: '',
+        embed: ''
+      },
+      type: 'p',
       file: ''
     }
   },
@@ -34,16 +49,21 @@ export default {
     processFile(event) {
       this.file = event.target.files[0]
     },
+    clear() {
+      this.file = ''
+      this.post.embed = ''
+    },
     newReply() {
       let formData = new FormData();
       formData.append('_id', this.$route.params.id);
       formData.append('description', this.post.description);
       formData.append('file', this.file);
+      formData.append('embed', this.post.embed);
 
       axios.post(process.env.VUE_APP_API_URL + '/replys', formData).then( (res) => {
-
         this.post.description = ''
         this.file = ''
+        this.post.embed = ''
 
         this.$router.push('/post/' + res.data._id)
       })
