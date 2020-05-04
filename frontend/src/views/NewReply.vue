@@ -92,6 +92,7 @@ export default {
     checkForm() {
       if (this.post.description || this.post.embed || this.file) {
         this.newReply()
+        return true
       }
 
       this.errors = []

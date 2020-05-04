@@ -1,7 +1,7 @@
 <template>
   <div class="reply border rounded mb-2 p-2" :class="{'flex-column' : photoRow }">
     <div class="media">
-      <img :src="url + reply.filename" :alt="reply.title" class="img-fluid" v-if="reply.filename" @click="tooglePhoto()" :class="{ 'max-300' : !photoRow }">
+      <img :src="url + reply.filename" :alt="reply.title" class="img-fluid" v-if="reply.filename" @click="tooglePhoto()" :class="{ 'max-image' : !photoRow }">
       <div class="embed-responsive embed-responsive-16by9" v-if="reply.embed">
         <iframe class="embed-responsive-item" :src="reply.embed" allowfullscreen></iframe>
       </div>
@@ -46,8 +46,9 @@ export default {
       display: flex;
       justify-content: center;
 
-      .max-300 {
+      .max-image {
         max-width: 300px;
+        max-height: 200px;
       }
 
       img {

@@ -50,6 +50,7 @@ export default {
         justify-content: center;
         img {
           max-width: 300px;
+          max-height: 200px;
         }
         div {
           min-width: 300px;

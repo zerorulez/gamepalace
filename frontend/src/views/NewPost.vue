@@ -98,6 +98,7 @@ export default {
     checkForm() {
       if (this.post.title && this.post.description && (this.post.embed || this.file)) {
         this.newPost()
+        return true
       }
 
       this.errors = []
