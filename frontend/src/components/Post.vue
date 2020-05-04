@@ -66,6 +66,10 @@ export default {
             font-size: 14px;
           }
         }
+        
+        .description {
+          white-space: pre-line;
+        }
       }
     }
 
