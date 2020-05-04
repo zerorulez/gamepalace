@@ -1,15 +1,18 @@
 <template>
-  <div class="reply border rounded mb-2 p-2">
-    <div class="reply-header">
-      <p class="date text-secondary">{{ reply.createdAt | moment("dddd, MMMM Do YYYY, h:mm:ss a") }}</p>
-    </div>
+  <div class="reply border rounded mb-2 p-2" :class="{'flex-column' : photoRow }">
     <div class="media">
-      <img :src="url + reply.filename" alt="" class="img-fluid my-2" v-if="reply.filename">
+      <img :src="url + reply.filename" :alt="reply.title" class="img-fluid" v-if="reply.filename" @click="tooglePhoto()" :class="{ 'max-300' : !photoRow }">
       <div class="embed-responsive embed-responsive-16by9" v-if="reply.embed">
-        <iframe class="embed-responsive-item" :src="reply.embed" allowfullscreen autoplay="false"></iframe>
+        <iframe class="embed-responsive-item" :src="reply.embed" allowfullscreen></iframe>
       </div>
     </div>
-    <p class="description py-2" v-if="reply.description != ''">{{ reply.description }}</p>
+    <div class="info" :class="{'pl-3' : !photoRow && (reply.filename || reply.embed), 'pt-2' : photoRow }">
+      <div class="reply-header">
+        <strong class="d-block">{{ reply.title }}</strong>
+        <p class="date text-secondary">{{ reply.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
+      </div>
+      <p class="description">{{ reply.description }}</p>
+    </div>
   </div>
 </template>
 
@@ -22,6 +25,12 @@ export default {
   data() {
     return {
       url: process.env.VUE_APP_UPLOAD_URL,
+      photoRow: false,
+    }
+  },
+  methods: {
+    tooglePhoto() {
+      this.photoRow = !this.photoRow;
     }
   }
 }
@@ -31,26 +40,33 @@ export default {
 <style scoped lang="scss">
   .reply {
     display: flex;
-    flex-direction: column;
     overflow-wrap: break-word;
 
-    .reply-header {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      .date {
-        font-size: 14px;
-      }
-    }
-    
     .media {
       display: flex;
       justify-content: center;
+
+      .max-300 {
+        max-width: 300px;
+      }
+
       img {
-        max-height: 300px;
+        cursor: pointer;
       }
       div {
-        max-width: 600px;
+        min-width: 300px;
+      }
+    }
+
+    .info {
+      width: 100%;
+      .reply-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .date {
+          font-size: 14px;
+        }
       }
     }
   }

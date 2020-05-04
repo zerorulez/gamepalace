@@ -26,7 +26,6 @@ export default {
   mounted() {
     axios.get(process.env.VUE_APP_API_URL + '/posts').then( res => {
       this.posts = res.data
-      console.log(this.posts)
     })
   }
 }
