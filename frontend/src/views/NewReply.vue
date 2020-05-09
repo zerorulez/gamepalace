@@ -67,6 +67,10 @@ export default {
       formData.append('file', this.file);
       formData.append('embed', this.post.embed);
 
+      if (this.$route.params.reply_id) {
+        formData.append('reply_id', this.$route.params.reply_id);
+      }
+
       axios.post(process.env.VUE_APP_API_URL + '/replys', formData).then( (res) => {
 
         if (res.data._id) {

@@ -27,6 +27,11 @@ Vue.use(VueRouter)
     path: '/post/:id/reply',
     name: 'NewReply',
     component: NewReply
+  },
+  {
+    path: '/post/:id/reply/:reply_id',
+    name: 'NewReply',
+    component: NewReply
   }
 ]
 

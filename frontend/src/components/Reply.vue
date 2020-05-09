@@ -1,5 +1,5 @@
 <template>
-  <div class="reply border rounded mb-2 p-2" :class="{'flex-column' : photoRow }">
+  <div class="reply border rounded mb-2 p-2" :class="{'flex-column' : photoRow }" :id="reply._id">
     <div class="media">
       <img :src="url + reply.filename" :alt="reply.title" class="img-fluid" v-if="reply.filename" @click="tooglePhoto()" :class="{ 'max-image' : !photoRow }">
       <div class="embed-responsive embed-responsive-16by9" v-if="reply.embed">
@@ -7,10 +7,11 @@
       </div>
     </div>
     <div class="info" :class="{'pl-3' : !photoRow && (reply.filename || reply.embed), 'pt-2' : photoRow }">
-      <div class="reply-header">
-        <strong class="d-block">{{ reply.title }}</strong>
-        <p class="date text-secondary">{{ reply.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
+      <div class="reply-header mb-2">
+        <router-link class="d-block reply-to-this" :to="$route.params.id + '/reply/' + reply._id">Reply</router-link>
+        <p class="date text-secondary pl-3">{{ reply.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
       </div>
+      <span v-if="reply.reply_id" class="reply-to-this d-block" @click="scrollMeTo(reply.reply_id)">>>{{ reply.reply_id }}</span>
       <p class="description">{{ reply.description }}</p>
     </div>
   </div>
@@ -31,6 +32,11 @@ export default {
   methods: {
     tooglePhoto() {
       this.photoRow = !this.photoRow;
+    },
+    scrollMeTo(refName) {
+      var element = document.getElementById(refName)
+      element.style.backgroundColor = '#f8f9fa'
+      element.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }
@@ -40,7 +46,7 @@ export default {
 <style scoped lang="scss">
   .reply {
     display: flex;
-    overflow-wrap: break-word;
+    word-break: break-all;
 
     .media {
       display: flex;
@@ -64,14 +70,19 @@ export default {
       .reply-header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+
         .date {
           font-size: 14px;
+          min-width: 150px;
+          text-align: right;
         }
       }
-      
-      .description {
-        white-space: pre-line;
+
+      .reply-to-this {
+        font-size: 14px;
+        cursor: pointer;
+        text-decoration: underline;
+        color: #0056b3;
       }
     }
   }

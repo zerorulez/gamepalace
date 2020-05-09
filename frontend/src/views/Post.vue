@@ -10,16 +10,16 @@
                 <iframe class="embed-responsive-item" :src="post.embed" allowfullscreen></iframe>
               </div>
             </div>
-            <div class="info" :class="{'pl-3' : !photoRow, 'pt-2' : photoRow }">
+            <div class="pt-3 info" :class="{'pl-xl-3' : !photoRow, 'pt-xl-0': !photoRow }">
               <div class="post-header">
                 <strong class="d-block">{{ post.title }}</strong>
-                <p class="date text-secondary">{{ post.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
+                <p class="date text-secondary pl-3">{{ post.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
               </div>
               <p class="description">{{ post.description }}</p>
             </div>
           </div>
           <div class="stats text-secondary pt-2" v-if="post.replys">
-            <strong class="replys">{{ post.replys.length }} Replys</strong>
+            <strong class="replys">{{ post.replys.length }} Replies</strong>
           </div>
         </div>
 
@@ -64,7 +64,12 @@ export default {
   .post-container {
     .post {
       display: flex;
-      overflow-wrap: break-word;
+      word-break: break-all;
+      flex-direction: column;
+
+      @media (min-width: 1200px) {
+        flex-direction: row;
+      }
 
       .media {
         display: flex;
@@ -79,7 +84,9 @@ export default {
           cursor: pointer;
         }
         div {
-          min-width: 300px;
+          @media (min-width: 1200px) {
+            min-width: 300px;
+          }
         }
       }
 
@@ -88,14 +95,14 @@ export default {
         .post-header {
           display: flex;
           justify-content: space-between;
-          align-items: center;
           .date {
             font-size: 14px;
+            min-width: 150px;
+            text-align: right;
           }
         }
 
         .description {
-          white-space: pre-line;
         }
       }
     }
