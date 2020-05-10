@@ -1,4 +1,5 @@
 const Post = require('../models/Post.js')
+const PrettyEmbed = require('../modules/PrettyEmbed.js')
 
 module.exports = {
     async index(req, res) {
@@ -27,68 +28,35 @@ module.exports = {
     async store(req, res) {
 
         var { title, description, embed } = req.body
-        var filename = null
+        var filename
         
         if (req.file) {
             filename = req.file.filename
         }
-
-        if (embed != '' && embed != 'undefined') {
-
-            if (embed.includes('youtube')) {
-                let id = embed.split("?v=")[1] //video id
-                
-                if (id) {
-                    embed = "http://www.youtube.com/embed/" + id //www.youtube.com/embed/sGbxmsDFVnE
-                } else {
-                    return res.json({error: 'Invalid embed!'})
-                }
-
-            } else if (embed.includes('twitch')) {
-                if (embed.includes('clip')) {
-                    let id = embed.split("clip/")[1] //channel name
-                    
-                    if (id) {
-                        embed = "https://clips.twitch.tv/embed?clip=" + id + "&autoplay=false"
-                    } else {
-                        return res.json({error: 'Invalid embed!'})
-                    }
-                    
-                } else {
-                    let id = embed.split(".tv/")[1] //channel name
-
-                    if (id) {
-                        embed = "https://player.twitch.tv/?channel=" + id + "&autoplay=false" //www.youtube.com/embed/sGbxmsDFVnE
-                    } else {
-                        return res.json({error: 'Invalid embed!'})
-                    }
-                    
-                }
-            } else if(embed.includes('vimeo')) {
-                
-                let id = embed.split("vimeo.com/")[1] //video id
-                
-                if (id) {
-                    embed = "https://player.vimeo.com/video/" + id //www.youtube.com/embed/sGbxmsDFVnE
-                } else {
-                    return res.json({error: 'Invalid embed!'})
-                }
-
-            } else {
-                return res.json({error: 'Invalid embed!'})
-            }
-
-        } else {
-            embed = null
-        }
-
-        const post = await Post.create({
-            title,
-            description,
-            filename,
-            embed
-        })
         
-        return res.json(post)
+        embed = PrettyEmbed(embed);
+
+        if (embed || filename) {
+            Post.create({
+                title,
+                description,
+                filename,
+                embed
+            }).then( post => {
+    
+                return res.json(post)
+    
+            }).catch( err => {
+    
+                return res.json({
+                    error: 'Title and description are required.'
+                })
+                
+            })
+        } else {
+            return res.json({
+                error: 'File or Embed are required.'
+            })
+        }
     }
 }

@@ -17,6 +17,9 @@ const PostSchema = new Schema({
     },
     replys: [
         {
+            reply_id: {
+                type: Schema.Types.ObjectId
+            },
             description: {
                 type: String,
             },
