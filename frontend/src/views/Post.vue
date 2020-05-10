@@ -2,7 +2,7 @@
   <div class="post-page container py-2">
     <div class="row">
       <div class="col-12">
-        <div class="post-container border rounded mb-2 p-2">
+        <div class="post-container border-gray rounded mb-2 p-2">
           <div class="post" :class="{'flex-column' : photoRow }">
             <div class="media">
               <img :src="url + post.filename" :alt="post.title" class="img-fluid" v-if="post.filename" @click="tooglePhoto()" :class="{ 'max-image' : !photoRow }">
@@ -12,13 +12,13 @@
             </div>
             <div class="pt-3 info" :class="{'pl-xl-3' : !photoRow, 'pt-xl-0': !photoRow }">
               <div class="post-header">
-                <strong class="d-block">{{ post.title }}</strong>
-                <p class="date text-secondary pl-3">{{ post.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
+                <strong class="d-block font-primary">{{ post.title }}</strong>
+                <p class="date font-secondary pl-3">{{ post.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
               </div>
-              <p class="description">{{ post.description }}</p>
+              <p class="description font-primary">{{ post.description }}</p>
             </div>
           </div>
-          <div class="stats text-secondary pt-2" v-if="post.replys">
+          <div class="stats font-secondary pt-2" v-if="post.replys">
             <strong class="replys">{{ post.replys.length }} Replies</strong>
           </div>
         </div>
@@ -64,7 +64,7 @@ export default {
   .post-container {
     .post {
       display: flex;
-      word-break: break-all;
+      word-break: break-word;
       flex-direction: column;
 
       @media (min-width: 1200px) {

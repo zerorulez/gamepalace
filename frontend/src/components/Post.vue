@@ -1,5 +1,5 @@
 <template>
-  <div class="post-container border rounded mb-2 p-2">
+  <div class="post-container border-gray rounded mb-2 p-2">
     <router-link class="no-link" :to="'/post/' + post._id">
       <div class="post">
         <div class="media">
@@ -10,13 +10,13 @@
         </div>
         <div class="pt-3 pt-xl-0 pl-xl-3 info">
           <div class="post-header">
-            <strong class="d-block">{{ post.title }}</strong>
-            <p class="date text-secondary pl-3">{{ post.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
+            <strong class="d-block font-primary">{{ post.title }}</strong>
+            <p class="date font-secondary pl-3">{{ post.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
           </div>
-          <p class="description">{{ post.description }}</p>
+          <p class="description font-primary">{{ post.description }}</p>
         </div>
       </div>
-      <div class="stats text-secondary pt-2">
+      <div class="stats font-secondary pt-2">
         <strong class="replys">{{ post.replys.length }} Replies</strong>
       </div>
     </router-link>
@@ -43,7 +43,7 @@ export default {
     .post {
       display: flex;
       flex-direction: column;
-      word-break: break-all;
+      word-break: break-word;
 
       @media (min-width: 1200px) {
         flex-direction: row;

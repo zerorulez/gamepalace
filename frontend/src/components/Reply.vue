@@ -1,18 +1,18 @@
 <template>
-  <div class="reply border rounded mb-2 p-2" :class="{'flex-column' : photoRow }" :id="reply._id">
+  <div class="reply border-gray rounded mb-2 p-2" :class="{'flex-column' : photoRow }" :id="reply._id">
     <div class="media">
       <img :src="url + reply.filename" :alt="reply.title" class="img-fluid" v-if="reply.filename" @click="tooglePhoto()" :class="{ 'max-image' : !photoRow }">
       <div class="embed-responsive embed-responsive-16by9" v-if="reply.embed">
         <iframe class="embed-responsive-item" :src="reply.embed" allowfullscreen></iframe>
       </div>
     </div>
-    <div class="info" :class="{'pl-3' : !photoRow && (reply.filename || reply.embed), 'pt-2' : photoRow }">
+    <div class="pt-3 info" :class="{'pl-xl-3' : !photoRow, 'pt-xl-0': !photoRow }">
       <div class="reply-header mb-2">
         <router-link class="d-block reply-to-this" :to="$route.params.id + '/reply/' + reply._id">Reply</router-link>
-        <p class="date text-secondary pl-3">{{ reply.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
+        <p class="date font-secondary pl-3">{{ reply.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
       </div>
       <span v-if="reply.reply_id" class="reply-to-this d-block" @click="scrollMeTo(reply.reply_id)">>>{{ reply.reply_id }}</span>
-      <p class="description">{{ reply.description }}</p>
+      <p class="description font-primary">{{ reply.description }}</p>
     </div>
   </div>
 </template>
@@ -46,7 +46,12 @@ export default {
 <style scoped lang="scss">
   .reply {
     display: flex;
-    word-break: break-all;
+    word-break: break-word;
+    flex-direction: column;
+
+    @media (min-width: 1200px) {
+      flex-direction: row;
+    }
 
     .media {
       display: flex;

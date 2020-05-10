@@ -28,7 +28,7 @@
             <label for="embed">Embed</label>
             <input type="text" class="form-control" id="embed" v-model="post.embed">
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-gamepalace">Submit</button>
         </form>
       </div>
     </div>
