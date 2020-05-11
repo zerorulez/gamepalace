@@ -35,7 +35,7 @@ export default {
     },
     scrollMeTo(refName) {
       var element = document.getElementById(refName)
-      element.style.backgroundColor = '#f8f9fa'
+      element.style.backgroundColor = '#3b3f44'
       element.scrollIntoView({ behavior: 'smooth' });
     }
   }
@@ -44,6 +44,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+  @import '../styles/variables.scss';
   .reply {
     display: flex;
     word-break: break-word;
@@ -87,7 +88,7 @@ export default {
         font-size: 14px;
         cursor: pointer;
         text-decoration: underline;
-        color: #0056b3;
+        color: $link;
       }
     }
   }
