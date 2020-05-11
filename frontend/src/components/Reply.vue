@@ -12,7 +12,7 @@
         <p class="date font-secondary pl-3">{{ reply.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
       </div>
       <span v-if="reply.reply_id" class="reply-to-this d-block" @click="scrollMeTo(reply.reply_id)">>>{{ reply.reply_id }}</span>
-      <p class="description font-primary">{{ reply.description }}</p>
+      <div class="description font-primary" v-html="reply.description"></div>
     </div>
   </div>
 </template>

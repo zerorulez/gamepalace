@@ -13,7 +13,7 @@
             <strong class="d-block font-primary">{{ post.title }}</strong>
             <p class="date font-secondary pl-3">{{ post.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
           </div>
-          <p class="description font-primary">{{ post.description }}</p>
+          <div class="description font-primary" v-html="post.description"></div>
         </div>
       </div>
       <div class="stats font-secondary pt-2">

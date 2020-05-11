@@ -11,7 +11,8 @@
           </p>
           <div class="form-group">
             <label for="description">Description</label>
-            <textarea class="form-control" id="description" rows="3" v-model="post.description"></textarea>
+            <wysiwyg v-model="post.description" id="description" class="description"/>
+            <!-- <textarea class="form-control" id="description" rows="3" v-model="post.description"></textarea> -->
           </div>
           <div class="form-group">
             <label for="type">Type</label>
@@ -108,3 +109,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  @import "~vue-wysiwyg/dist/vueWysiwyg.css";
+  .description {
+    background-color: white;
+    border-radius: .25rem;
+    color: #495057;
+    // cursor: text;
+  }
+</style>
