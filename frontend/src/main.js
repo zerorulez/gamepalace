@@ -7,6 +7,7 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
 import wysiwyg from "vue-wysiwyg";
 Vue.use(wysiwyg, {
   hideModules: { 
+    "bold": true, 
     "justifyLeft": true, 
     "justifyCenter": true, 
     "justifyRight": true,
