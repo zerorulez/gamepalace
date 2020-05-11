@@ -59,7 +59,6 @@ export default {
       justify-content: center;
 
       .max-image {
-        max-width: 300px;
         max-height: 200px;
       }
 
@@ -82,6 +81,10 @@ export default {
           min-width: 150px;
           text-align: right;
         }
+      }
+
+      .description {
+        white-space: pre-line;
       }
 
       .reply-to-this {

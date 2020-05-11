@@ -53,7 +53,6 @@ export default {
         display: flex;
         justify-content: center;
         img {
-          max-width: 300px;
           max-height: 200px;
         }
         div {
@@ -76,6 +75,7 @@ export default {
         }
         
         .description {
+          white-space: pre-line;
         }
       }
     }

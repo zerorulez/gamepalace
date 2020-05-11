@@ -76,7 +76,6 @@ export default {
         justify-content: center;
 
         .max-image {
-          max-width: 300px;
           max-height: 200px;
         }
 
@@ -103,6 +102,7 @@ export default {
         }
 
         .description {
+          white-space: pre-line;
         }
       }
     }
