@@ -15,8 +15,7 @@
           </div>
           <div class="form-group">
             <label for="description">Description</label>
-            <wysiwyg v-model="post.description" id="description" class="description"/>
-            <!-- <textarea class="form-control" id="description" rows="3" v-model="post.description"></textarea> -->
+            <textarea class="form-control" id="description" rows="3" v-model="post.description"></textarea>
           </div>
           <div class="form-group">
             <label for="type">Type</label>
