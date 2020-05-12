@@ -6,7 +6,7 @@
         <iframe class="embed-responsive-item" :src="reply.embed" allowfullscreen></iframe>
       </div>
     </div>
-    <div class="pt-3 info" :class="{'pl-xl-3' : !photoRow, 'pt-xl-0': !photoRow }">
+    <div class="info" :class="{'pl-xl-3' : (!photoRow && (reply.embed || reply.filename) ), 'pt-xl-0': !photoRow, 'pt-3': (reply.embed || reply.filename) }">
       <div class="reply-header mb-2">
         <router-link class="d-block reply-to-this" :to="$route.params.id + '/reply/' + reply._id">Reply</router-link>
         <p class="date font-secondary pl-3">{{ reply.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
