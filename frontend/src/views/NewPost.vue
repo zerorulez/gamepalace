@@ -68,6 +68,7 @@ export default {
     newPost() {
       
       axios.get('https://api.ipify.org/?format=json').then(ipify => {
+        console.log(ipify)
         let formData = new FormData();
         formData.append('title', this.post.title);
         formData.append('description', this.post.description);

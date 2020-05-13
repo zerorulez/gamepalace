@@ -4,7 +4,7 @@ const PrettyEmbed = require('../modules/PrettyEmbed.js')
 module.exports = {
     async store(req, res) {
         
-        var { _id, reply_id, description, embed } = req.body
+        var { _id, reply_id, description, embed, ip } = req.body
         var filename
         
         if (req.file) {
