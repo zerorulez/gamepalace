@@ -2,10 +2,14 @@ const express = require('express')
 const multer = require('multer')
 const multerConfig = require('./config/multer')
 
+const IPController = require('./controllers/IP.js')
 const PostController = require('./controllers/Post.js')
 const ReplyController = require('./controllers/Reply.js')
 
 const routes = express.Router()
+
+
+routes.get('/getIP', IPController.index)
 
 routes.get('/posts', PostController.index)
 routes.get('/posts/:_id', PostController.get)

@@ -60,46 +60,42 @@ export default {
       this.file = ''
       this.post.embed = ''
     },
-    newReply() {
+    async newReply() {
       
-      axios.get('https://api.ipify.org/?format=json').then(ipify => {
+      let IP = await axios.get(process.env.VUE_APP_API_URL + '/getIP')
 
-        let formData = new FormData()
-        formData.append('_id', this.$route.params.id)
-        formData.append('description', this.post.description)
-        formData.append('file', this.file)
-        formData.append('embed', this.post.embed)
-        formData.append('ip', ipify.data.ip)
+      let formData = new FormData();
+      formData.append('_id', this.$route.params.id);
+      formData.append('description', this.post.description);
+      formData.append('file', this.file);
+      formData.append('embed', this.post.embed);
+      formData.append('ip', IP.data.IP);
 
-        if (this.$route.params.reply_id) {
-          formData.append('reply_id', this.$route.params.reply_id)
+      if (this.$route.params.reply_id) {
+        formData.append('reply_id', this.$route.params.reply_id);
+      }
+
+      axios.post(process.env.VUE_APP_API_URL + '/replys', formData).then( (res) => {
+
+        if (res.data._id) {
+          this.post.description = ''
+          this.file = ''
+          this.post.embed = ''
+
+          this.$router.push('/post/' + res.data._id)
+        } else {
+          this.errors = []
+
+          if (res.error) {
+            this.errors.push(res.error)
+          }
         }
 
-        axios.post(process.env.VUE_APP_API_URL + '/replys', formData).then( (res) => {
-
-          if (res.data._id) {
-            this.post.description = ''
-            this.file = ''
-            this.post.embed = ''
-
-            this.$router.push('/post/' + res.data._id)
-          } else {
-            this.errors = []
-
-            if (res.error) {
-              this.errors.push(res.error)
-            }
-          }
-
-        }).catch( () => {
-          this.errors = []
-            
-          this.errors.push('File size too big! Max 2mb')
-        })
-
+      }).catch( () => {
+        this.errors = []
+          
+        this.errors.push('File size too big! Max 2mb')
       })
-
-      
     },
     checkForm() {
       if (this.post.description || this.post.embed || this.file) {

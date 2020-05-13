@@ -65,40 +65,38 @@ export default {
       this.file = ''
       this.post.embed = ''
     },
-    newPost() {
+    async newPost() {
+
+      let IP = await axios.get(process.env.VUE_APP_API_URL + '/getIP')
       
-      axios.get('https://api.ipify.org/?format=json').then(ipify => {
-        console.log(ipify)
-        let formData = new FormData();
-        formData.append('title', this.post.title);
-        formData.append('description', this.post.description);
-        formData.append('file', this.file);
-        formData.append('embed', this.post.embed);
-        formData.append('ip', ipify.data.ip);
+      let formData = new FormData();
+      formData.append('title', this.post.title);
+      formData.append('description', this.post.description);
+      formData.append('file', this.file);
+      formData.append('embed', this.post.embed);
+      formData.append('ip', IP.data.IP);
 
-        axios.post(process.env.VUE_APP_API_URL + '/posts', formData).then( (res) => {
+      axios.post(process.env.VUE_APP_API_URL + '/posts', formData).then( (res) => {
         
-          if (res.data._id) {
-            this.post.title = ''
-            this.post.description = ''
-            this.file = ''
-            this.post.embed = ''
+        if (res.data._id) {
+          this.post.title = ''
+          this.post.description = ''
+          this.file = ''
+          this.post.embed = ''
 
-            this.$router.push('/post/' + res.data._id)
-          } else {
-            this.errors = []
-            
-            if (res.data.error) {
-              this.errors.push(res.data.error)
-            }
-          }
-
-        }).catch( () => {
+          this.$router.push('/post/' + res.data._id)
+        } else {
           this.errors = []
-            
-          this.errors.push('File size too big! Max 2mb')
-        })
+          
+          if (res.data.error) {
+            this.errors.push(res.data.error)
+          }
+        }
 
+      }).catch( () => {
+        this.errors = []
+          
+        this.errors.push('File size too big! Max 2mb')
       })
     },
     checkForm() {
