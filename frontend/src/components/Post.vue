@@ -1,25 +1,25 @@
 <template>
   <div class="post-container border-gray rounded mb-2 p-2">
-    <router-link class="no-link" :to="'/post/' + post._id">
-      <div class="post">
-        <div class="media">
-          <img :src="url + post.filename" :alt="post.title" class="img-fluid" v-if="post.filename">
-          <div class="embed-responsive embed-responsive-16by9" v-if="post.embed">
-            <iframe class="embed-responsive-item" :src="post.embed" allowfullscreen></iframe>
-          </div>
-        </div>
-        <div class="pt-3 pt-xl-0 pl-xl-3 info">
-          <div class="post-header">
-            <strong class="d-block font-primary">{{ post.title }}</strong>
-            <p class="date font-secondary pl-3">{{ post.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
-          </div>
-          <p class="description font-primary">{{ post.description }}</p>
+    <div class="post" :class="{'flex-column' : photoRow }">
+      <div class="media">
+        <img :src="url + post.filename" :alt="post.title" class="img-fluid" v-if="post.filename" @click="tooglePhoto()" :class="{ 'max-image' : !photoRow }">
+        <div class="embed-responsive embed-responsive-16by9" v-if="post.embed">
+          <iframe class="embed-responsive-item" :src="post.embed" allowfullscreen></iframe>
         </div>
       </div>
-      <div class="stats font-secondary pt-2">
-        <strong class="replys">{{ post.replys.length }} Replies</strong>
+      <div class="pt-3 info" :class="{'pl-xl-3' : !photoRow, 'pt-xl-0': !photoRow }">
+        <div class="post-header">
+          <strong class="d-block font-primary">{{ post.title }}</strong>
+          <p class="date font-secondary pl-3">{{ post.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
+        </div>
+        <p class="description font-primary" v-html="post.description" v-linkified></p>
       </div>
-    </router-link>
+    </div>
+    <div class="stats font-secondary pt-2">
+      <strong class="replys">{{ post.replys.length }} Replies</strong>
+
+      <router-link class="btn btn-sm btn-gamepalace" :to="'/post/' + post._id">Read More</router-link>
+    </div>
   </div>
 </template>
 
@@ -31,7 +31,13 @@ export default {
   },
   data() {
     return {
-      url: process.env.VUE_APP_UPLOAD_URL
+      url: process.env.VUE_APP_UPLOAD_URL,
+      photoRow: false
+    }
+  },
+  methods: {
+    tooglePhoto() {
+      this.photoRow = !this.photoRow;
     }
   }
 }
@@ -52,13 +58,19 @@ export default {
       .media {
         display: flex;
         justify-content: center;
+
         img {
-          max-height: 200px;
+          cursor: pointer;
         }
+
         div {
           @media (min-width: 1200px) {
             min-width: 300px;
           }
+        }
+        
+        .max-image {
+          max-height: 200px;
         }
       }
 
@@ -81,6 +93,9 @@ export default {
     }
 
     .stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       .replys {
         font-size: 14px;
       }

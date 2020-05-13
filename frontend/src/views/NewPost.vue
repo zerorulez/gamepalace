@@ -118,7 +118,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import "~vue-wysiwyg/dist/vueWysiwyg.css";
   .description {
     background-color: white;
     border-radius: .25rem;

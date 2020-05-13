@@ -29,7 +29,6 @@ module.exports = {
     async store(req, res) {
 
         let ip = IP(req)
-        console.log(ip)
 
         var { title, description, embed } = req.body
         var filename

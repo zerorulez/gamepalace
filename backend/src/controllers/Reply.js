@@ -6,7 +6,6 @@ module.exports = {
     async store(req, res) {
 
         let ip = IP(req)
-        console.log(ip)
         
         var { _id, reply_id, description, embed } = req.body
         var filename
