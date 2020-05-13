@@ -65,16 +65,12 @@ export default {
       this.file = ''
       this.post.embed = ''
     },
-    async newPost() {
-
-      let IP = await axios.get(process.env.VUE_APP_API_URL + '/getIP')
-      
+    newPost() {
       let formData = new FormData();
       formData.append('title', this.post.title);
       formData.append('description', this.post.description);
       formData.append('file', this.file);
       formData.append('embed', this.post.embed);
-      formData.append('ip', IP.data.IP);
 
       axios.post(process.env.VUE_APP_API_URL + '/posts', formData).then( (res) => {
         

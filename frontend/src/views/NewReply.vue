@@ -60,16 +60,12 @@ export default {
       this.file = ''
       this.post.embed = ''
     },
-    async newReply() {
-      
-      let IP = await axios.get(process.env.VUE_APP_API_URL + '/getIP')
-
+    newReply() {
       let formData = new FormData();
       formData.append('_id', this.$route.params.id);
       formData.append('description', this.post.description);
       formData.append('file', this.file);
       formData.append('embed', this.post.embed);
-      formData.append('ip', IP.data.IP);
 
       if (this.$route.params.reply_id) {
         formData.append('reply_id', this.$route.params.reply_id);

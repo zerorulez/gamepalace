@@ -1,8 +1,12 @@
 const Post = require('../models/Post.js')
 const PrettyEmbed = require('../modules/PrettyEmbed.js')
+const IP = require('../modules/IP.js')
 
 module.exports = {
     async store(req, res) {
+
+        let ip = IP()
+        console.log(ip)
         
         var { _id, reply_id, description, embed, ip } = req.body
         var filename
