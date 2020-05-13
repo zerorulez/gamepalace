@@ -1,5 +1,6 @@
 const Post = require('../models/Post.js')
 const PrettyEmbed = require('../modules/PrettyEmbed.js')
+const IP = require('../modules/IP.js')
 
 module.exports = {
     async index(req, res) {
@@ -27,7 +28,11 @@ module.exports = {
 
     async store(req, res) {
 
-        var { title, description, embed, ip } = req.body
+        let ip = IP()
+        console.log(log)
+
+
+        var { title, description, embed } = req.body
         var filename
         
         if (req.file) {
