@@ -27,7 +27,7 @@ module.exports = {
 
     async store(req, res) {
 
-        var { title, description, embed } = req.body
+        var { title, description, embed, ip } = req.body
         var filename
         
         if (req.file) {
@@ -42,7 +42,7 @@ module.exports = {
                 description,
                 filename,
                 embed,
-                ip: req.ip
+                ip
             }).then( post => {
     
                 return res.json(post)

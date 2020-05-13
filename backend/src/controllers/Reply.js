@@ -22,7 +22,7 @@ module.exports = {
                         description,
                         filename,
                         embed,
-                        ip: req.ip,
+                        ip,
                         createdAt: new Date()
                     })
             

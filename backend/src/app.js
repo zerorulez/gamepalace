@@ -15,7 +15,7 @@ mongoose.connect(process.env.DB_LINK, {
     useCreateIndex: true
 })
 
-app.use(express.static('tmp'));
+app.use(express.static('tmp'))
 app.use(cors())
 app.use(express.json())
 app.use(routes)

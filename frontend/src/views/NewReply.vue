@@ -61,37 +61,45 @@ export default {
       this.post.embed = ''
     },
     newReply() {
-      let formData = new FormData();
-      formData.append('_id', this.$route.params.id);
-      formData.append('description', this.post.description);
-      formData.append('file', this.file);
-      formData.append('embed', this.post.embed);
+      
+      axios.get('https://api.ipify.org/?format=json').then(ipify => {
 
-      if (this.$route.params.reply_id) {
-        formData.append('reply_id', this.$route.params.reply_id);
-      }
+        let formData = new FormData()
+        formData.append('_id', this.$route.params.id)
+        formData.append('description', this.post.description)
+        formData.append('file', this.file)
+        formData.append('embed', this.post.embed)
+        formData.append('ip', ipify.data.ip)
 
-      axios.post(process.env.VUE_APP_API_URL + '/replys', formData).then( (res) => {
-
-        if (res.data._id) {
-          this.post.description = ''
-          this.file = ''
-          this.post.embed = ''
-
-          this.$router.push('/post/' + res.data._id)
-        } else {
-          this.errors = []
-
-          if (res.error) {
-            this.errors.push(res.error)
-          }
+        if (this.$route.params.reply_id) {
+          formData.append('reply_id', this.$route.params.reply_id)
         }
 
-      }).catch( () => {
-        this.errors = []
-          
-        this.errors.push('File size too big! Max 2mb')
+        axios.post(process.env.VUE_APP_API_URL + '/replys', formData).then( (res) => {
+
+          if (res.data._id) {
+            this.post.description = ''
+            this.file = ''
+            this.post.embed = ''
+
+            this.$router.push('/post/' + res.data._id)
+          } else {
+            this.errors = []
+
+            if (res.error) {
+              this.errors.push(res.error)
+            }
+          }
+
+        }).catch( () => {
+          this.errors = []
+            
+          this.errors.push('File size too big! Max 2mb')
+        })
+
       })
+
+      
     },
     checkForm() {
       if (this.post.description || this.post.embed || this.file) {
