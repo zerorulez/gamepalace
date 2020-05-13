@@ -8,7 +8,7 @@ module.exports = {
         let ip = IP()
         console.log(ip)
         
-        var { _id, reply_id, description, embed, ip } = req.body
+        var { _id, reply_id, description, embed } = req.body
         var filename
         
         if (req.file) {
