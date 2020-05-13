@@ -15,6 +15,9 @@ const PostSchema = new Schema({
     embed: {
         type: String
     },
+    ip: {
+        type: String
+    },
     replys: [
         {
             reply_id: {
@@ -27,6 +30,9 @@ const PostSchema = new Schema({
                 type: String
             },
             embed: {
+                type: String
+            },
+            ip: {
                 type: String
             },
             createdAt: {

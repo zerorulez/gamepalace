@@ -41,7 +41,8 @@ module.exports = {
                 title,
                 description,
                 filename,
-                embed
+                embed,
+                ip: req.ip
             }).then( post => {
     
                 return res.json(post)
