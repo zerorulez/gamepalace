@@ -16,6 +16,7 @@ mongoose.connect(process.env.DB_LINK, {
 })
 
 app.use(express.static('tmp'))
+app.set('trust proxy', true)
 app.use(cors())
 app.use(express.json())
 app.use(routes)
