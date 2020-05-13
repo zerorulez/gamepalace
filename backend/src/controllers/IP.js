@@ -5,6 +5,8 @@ module.exports = {
                 req.connection.remoteAddress ||
                 req.socket.remoteAddress ||
                 req.connection.socket.remoteAddress;
+
+            console.log(IPs)
     
             if (IPs.indexOf(":") !== -1) {
                 IPs = IPs.split(":")[IPs.split(":").length - 1]
