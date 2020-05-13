@@ -5,7 +5,7 @@ const IP = require('../modules/IP.js')
 module.exports = {
     async store(req, res) {
 
-        let ip = IP()
+        let ip = IP(req)
         console.log(ip)
         
         var { _id, reply_id, description, embed } = req.body

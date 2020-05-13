@@ -1,4 +1,4 @@
-var ip = function() {
+var ip = function(req) {
     var IPs = req.headers['x-forwarded-for'] ||
                 req.connection.remoteAddress ||
                 req.socket.remoteAddress ||
