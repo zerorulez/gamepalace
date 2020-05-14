@@ -69,6 +69,7 @@ export default {
       let formData = new FormData();
       formData.append('title', this.post.title);
       formData.append('description', this.post.description);
+      formData.append('categorie', this.$route.params.categorie);
       formData.append('file', this.file);
       formData.append('embed', this.post.embed);
 

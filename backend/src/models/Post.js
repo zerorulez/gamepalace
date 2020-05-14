@@ -9,6 +9,10 @@ const PostSchema = new Schema({
         type: String,
         required: true
     },
+    categorie: {
+        type: String,
+        required: true
+    },
     filename: {
         type: String
     },

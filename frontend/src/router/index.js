@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Board from '../views/Board.vue'
 import NewPost from '../views/NewPost.vue'
 import Post from '../views/Post.vue'
 import NewReply from '../views/NewReply.vue'
@@ -14,7 +15,12 @@ Vue.use(VueRouter)
     component: Home
   },
   {
-    path: '/post/new',
+    path: '/:categorie',
+    name: 'Board',
+    component: Board
+  },
+  {
+    path: '/:categorie/post/new',
     name: 'NewPost',
     component: NewPost
   },

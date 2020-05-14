@@ -7,7 +7,7 @@ const ReplyController = require('./controllers/Reply.js')
 
 const routes = express.Router()
 
-routes.get('/posts', PostController.index)
+routes.get('/:categorie', PostController.index)
 routes.get('/posts/:_id', PostController.get)
 routes.post('/posts', multer(multerConfig).single('file'), PostController.store)
 

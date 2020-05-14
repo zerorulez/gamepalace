@@ -4,8 +4,10 @@ const IP = require('../modules/IP.js')
 
 module.exports = {
     async index(req, res) {
+        
+        const categorie = req.params.categorie
 
-        const posts = await Post.find().sort({'updatedAt': -1}).limit(20)
+        const posts = await Post.find({ categorie: categorie }).sort({'updatedAt': -1}).limit(20)
 
         return res.json(posts)
     },
@@ -30,7 +32,7 @@ module.exports = {
 
         let ip = IP(req)
 
-        var { title, description, embed } = req.body
+        var { title, description, embed, categorie } = req.body
         var filename
         
         if (req.file) {
@@ -43,6 +45,7 @@ module.exports = {
             Post.create({
                 title,
                 description,
+                categorie,
                 filename,
                 embed,
                 ip

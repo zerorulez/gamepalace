@@ -3,9 +3,14 @@
 
     <nav class="navbar">
       <router-link class="navbar-brand" to="/">GamePalace</router-link>
-      <router-link class="btn btn-gamepalace my-2 my-sm-0" to="/post/new" v-if="$route.name == 'Home'">New Post</router-link>
-      <router-link class="btn btn-gamepalace my-2 my-sm-0" :to="'/post/' + $route.params.id + '/reply'" v-if="$route.name == 'Post'">New Reply</router-link>
+      <router-link class="btn btn-gamepalace" :to="$route.params.categorie + '/post/new'" v-if="$route.name == 'Board'">New Post</router-link>
+      <router-link class="btn btn-gamepalace" :to="'/post/' + $route.params.id + '/reply'" v-if="$route.name == 'Post'">New Reply</router-link>
     </nav>
+
+    <div class="boards">
+      <router-link to="/random">Random</router-link>
+      <router-link to="/games">Games</router-link>
+    </div>
 
     <router-view/>
   </div>
@@ -28,6 +33,7 @@ export default {
     font-family: Avenir, Helvetica, Arial, sans-serif;
     background-color: $background;
     color: white;
+    letter-spacing: 1px;
 
     a {
       color: $link;
@@ -68,6 +74,13 @@ export default {
 
     .border-gray {
       border: 1px solid $gray;
+    }
+  }
+
+  .boards {
+    display: flex;
+    a {
+      padding: 10px;
     }
   }
 </style>
