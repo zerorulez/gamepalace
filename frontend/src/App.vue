@@ -1,17 +1,23 @@
 <template>
   <div id="app">
+    <b-navbar toggleable="lg">
+      <router-link class="navbar-brand p-0" to="/">GamePalace</router-link>
 
-    <nav class="navbar">
-      <router-link class="navbar-brand" to="/">GamePalace</router-link>
-      <router-link class="btn btn-gamepalace" :to="$route.params.categorie + '/post/new'" v-if="$route.name == 'Board'">New Post</router-link>
-      <router-link class="btn btn-gamepalace" :to="'/post/' + $route.params.id + '/reply'" v-if="$route.name == 'Post'">New Reply</router-link>
-    </nav>
+      <b-navbar-toggle class="hamburguer" target="nav-collapse"></b-navbar-toggle>
 
-    <div class="boards">
-      <router-link to="/random">Random</router-link>
-      <router-link to="/games">Games</router-link>
-    </div>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav class="boards">
+          <router-link to="/random">Random</router-link>
+          <router-link to="/games">Games</router-link>
+        </b-navbar-nav>
 
+        <!-- Right aligned nav items -->
+        <b-navbar-nav class="ml-auto">
+          <router-link class="btn btn-gamepalace btn-sm" :to="$route.params.categorie + '/post/new'" v-if="$route.name == 'Board'">New Post</router-link>
+          <router-link class="btn btn-gamepalace btn-sm" :to="'/post/' + $route.params.id + '/reply'" v-if="$route.name == 'Post'">New Reply</router-link>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
     <router-view/>
   </div>
 </template>
@@ -49,9 +55,12 @@ export default {
     }
 
     .navbar {
+      min-height: 50px;
       background-color: $navbar;
       .navbar-brand {
-        color: $button;
+        &:hover {
+          color: $button;
+        }
       }
     }
 
@@ -75,12 +84,24 @@ export default {
     .border-gray {
       border: 1px solid $gray;
     }
-  }
 
-  .boards {
-    display: flex;
-    a {
-      padding: 10px;
+    .boards {
+      a {
+        padding-right: 15px;
+        text-decoration: none;
+
+        &:hover {
+          color: $button;
+        }
+      }
+    }
+
+    .hamburguer {
+      color: $button;
+      border-color: $button;
+      .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(13, 168, 238, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+      }
     }
   }
 </style>

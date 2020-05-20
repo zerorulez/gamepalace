@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
+import { BootstrapVue } from 'bootstrap-vue'
 
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 import linkify from 'vue-linkify'
 
@@ -10,6 +12,7 @@ Vue.directive('linkified', linkify)
 
 Vue.config.productionTip = false
 
+Vue.use(BootstrapVue)
 Vue.use(require('vue-moment'));
 
 new Vue({
