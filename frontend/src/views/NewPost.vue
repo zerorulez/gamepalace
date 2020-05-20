@@ -93,7 +93,7 @@ export default {
       }).catch( () => {
         this.errors = []
           
-        this.errors.push('File size too big! Max 2mb')
+        this.errors.push('File size too big (max 2mb) or too many requests')
       })
     },
     checkForm() {
