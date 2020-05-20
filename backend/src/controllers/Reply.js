@@ -1,6 +1,7 @@
 const Post = require('../models/Post.js')
 const PrettyEmbed = require('../modules/PrettyEmbed.js')
 const IP = require('../modules/IP.js')
+const sanitizeHtml = require('sanitize-html')
 
 module.exports = {
     async store(req, res) {
@@ -9,6 +10,8 @@ module.exports = {
         
         var { _id, reply_id, description, embed } = req.body
         var filename
+        
+        description = sanitizeHtml(description)
         
         if (req.file) {
             filename = req.file.filename
