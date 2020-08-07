@@ -3,10 +3,10 @@ const path = require("path");
 const crypto = require("crypto");
 
 module.exports = {
-  dest: path.resolve(__dirname, "..", "..", "tmp", "uploads"),
+  dest: path.resolve(__dirname, "..", "images", "posts"),
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
-      cb(null, path.resolve(__dirname, "..", "..", "tmp", "uploads"));
+      cb(null, path.resolve(__dirname, "..", "images", "posts"));
     },
     filename: (req, file, cb) => {
       crypto.randomBytes(16, (err, hash) => {
@@ -19,12 +19,11 @@ module.exports = {
     }
   }),
   limits: {
-    fileSize: 2 * 1024 * 1024
+    fileSize: 3 * 1024 * 1024 // 3mb
   },
   fileFilter: (req, file, cb) => {
     const allowedMimes = [
       "image/jpeg",
-      "image/pjpeg",
       "image/png",
       "image/gif"
     ];
@@ -32,7 +31,7 @@ module.exports = {
     if (allowedMimes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error("Invalid file type."));
+      cb(null, false);
     }
   }
 };

@@ -12,10 +12,11 @@ const server = require('http').Server(app)
 mongoose.connect(process.env.DB_LINK, {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useFindAndModify: false
 })
 
-app.use(express.static('tmp'))
+app.use(express.static('images'))
 app.set('trust proxy', true)
 app.use(cors())
 app.use(express.json())

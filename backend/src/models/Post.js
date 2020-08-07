@@ -9,41 +9,44 @@ const PostSchema = new Schema({
         type: String,
         required: true
     },
-    categorie: {
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    image: {
         type: String,
         required: true
     },
-    filename: {
-        type: String
-    },
-    embed: {
-        type: String
+    imageMimeType: {
+        type: String,
+        required: true
     },
     ip: {
-        type: String
+        type: String,
+        required: true
     },
-    replys: [
-        {
-            reply_id: {
-                type: Schema.Types.ObjectId
-            },
-            description: {
-                type: String,
-            },
-            filename: {
-                type: String
-            },
-            embed: {
-                type: String
-            },
-            ip: {
-                type: String
-            },
-            createdAt: {
-                type: Date
-            },
-        }
-    ]
+    replies: [{
+        description: {
+            type: String,
+            required: true
+        },
+        user: {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            required: true
+        },
+        image: {
+            type: String
+        },
+        imageMimeType: {
+            type: String
+        },
+        ip: {
+            type: String,
+            required: true
+        },
+    }]
 },{
     timestamps: true
 })
