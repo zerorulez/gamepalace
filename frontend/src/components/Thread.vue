@@ -15,7 +15,7 @@
         </div>
         <div class="thread-footer">
           <span class="replies">{{ thread.replies.length }} respostas</span>
-          <span class="date">{{ thread.createdAt }}</span>
+          <span class="date">{{ thread.createdAt | moment("H:mm - D MMMM") }}</span>
         </div>
       </div>
     </div>
@@ -119,6 +119,10 @@ export default {
         display: flex;
         justify-content: space-between;
         font-size: 12px;
+
+        .date {
+          text-transform: capitalize;
+        }
       }
     }
   }

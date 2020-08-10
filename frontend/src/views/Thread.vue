@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-12">
           <div class="thread-wrapper">
-            <div class="thread-image" v-if="thread.image" :style="{ 'background-image' : 'url(' + imagePath + thread.image + ')'}"></div>
+            <div class="thread-image" @click="openImage()" v-if="thread.image" :style="{ 'background-image' : 'url(' + imagePath + thread.image + ')'}"></div>
             <div class="thread-content">
               <div class="thread-header">
                 <div class="header-wrapper">
@@ -21,7 +21,7 @@
               </div>
               <div class="thread-footer">
                 <span class="replies" v-if="thread.replies">{{ thread.replies.length }} respostas</span>
-                <span class="date">{{ thread.createdAt }}</span>
+                <span class="date">{{ thread.createdAt | moment("H:mm - D MMMM") }}</span>
               </div>
             </div>
           </div>
@@ -88,6 +88,7 @@
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
+      cursor: pointer;
       
       @media (min-width: 992px) {
         height: 250px;
@@ -146,6 +147,10 @@
         display: flex;
         justify-content: space-between;
         font-size: 12px;
+
+        .date {
+          text-transform: capitalize;
+        }
       }
     }
   }
@@ -272,6 +277,10 @@ export default {
       if (!this.reply.description && this.file == '') {
         this.errors.push('Uma mensagem ou imagem são obrigatórios.');
       }
+    },
+    openImage() {
+      this.$store.commit('setLightbox', { image: this.thread.image, type: 'image' })
+      this.$store.commit('toogleLightbox')
     }
   },
   components: {

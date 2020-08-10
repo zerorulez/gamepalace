@@ -1,13 +1,13 @@
 <template>
   <div class="reply">
     <div class="reply-wrapper">
-      <div class="reply-image" v-if="reply.image" :style="{ 'background-image' : 'url(' + imagePath + reply.image + ')'}"></div>
+      <div class="reply-image" @click="openImage()" v-if="reply.image" :style="{ 'background-image' : 'url(' + imagePath + reply.image + ')'}"></div>
       <div class="reply-content">
         <div class="reply-header">
           <p>{{ reply.description }}</p>
         </div>
         <div class="reply-footer">
-          <span class="date">{{ reply.createdAt }}</span>
+          <span class="date">{{ reply.createdAt | moment("H:mm - D MMMM") }}</span>
           <div class="user">
             <span class="username" v-if="reply.user">{{ reply.user.username }}</span>
             <div class="avatar-image" :style="{ 'background-image' : 'url(' + avatarPath + reply.user.avatar + ')'}"></div>
@@ -58,6 +58,10 @@
         align-items: center;
         font-size: 12px;
 
+        .date {
+          text-transform: capitalize;
+        }
+
         .user {
           display: flex;
           align-items: center;
@@ -91,6 +95,12 @@ export default {
     return {
       imagePath: process.env.VUE_APP_API + '/images/posts/',
       avatarPath: process.env.VUE_APP_API + '/images/avatars/thumbnail_'
+    }
+  },
+  methods: {
+    openImage() {
+      this.$store.commit('setLightbox', { image: this.reply.image, type: 'image' })
+      this.$store.commit('toogleLightbox')
     }
   },
   components: {

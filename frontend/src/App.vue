@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <Lightbox v-if="$store.state.lightbox.active" />
     <Header />
     <router-view/>
     <Footer />
@@ -35,6 +36,7 @@
   p {
     margin-bottom: 0;
     overflow-wrap: anywhere;
+    white-space: pre-wrap;
   }
 
   a {
@@ -83,12 +85,14 @@
 // @ is an alias to /src
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
+import Lightbox from '@/components/Lightbox.vue'
 
 export default {
   name: 'App',
   components: {
     Header,
-    Footer
+    Footer,
+    Lightbox
   }
 }
 </script>
