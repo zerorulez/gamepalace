@@ -1,5 +1,6 @@
 const sharp = require('sharp');
-const path = require("path");
+const path = require('path');
+const bcrypt = require('bcryptjs');
 
 const User = require('../models/User.js')
 
@@ -13,7 +14,10 @@ module.exports = {
     },
     async update(req, res) {
 
-        const { password } = req.body
+        const { password, newPassword } = req.body
+
+        var avatar = undefined
+        var avatarMimeType = undefined
         
         if (req.file) {
             avatar = req.file.filename
@@ -27,16 +31,31 @@ module.exports = {
                 }
             })
         } else {
-            return res.status(400).send({ error: "Error uploading image"})
+            // return res.status(400).send({ error: "Error uploading image"})
         }
 
-        const user = await User.findByIdAndUpdate(req.userId, {
-            image,
-            imageMimeType,
-            password
+        var confirmPassword = undefined
+
+        if (password && newPassword) {
+            const user = await User.findById( req.userId ).select('+password')
+            if (!user) {
+                return res.status(400).json({ error: 'User not found' })
+            }
+
+            if (!await bcrypt.compare(password, user.password)) {
+                return res.status(400).send({ error: 'Invalid password'})
+            }
+
+            confirmPassword = newPassword
+        }
+
+        const updatedUser = await User.findByIdAndUpdate(req.userId, {
+            avatar,
+            avatarMimeType,
+            password: confirmPassword
         }, { new: true })
 
-        res.send(user)
+        res.send(updatedUser)
 
     },
     async delete(req, res) {

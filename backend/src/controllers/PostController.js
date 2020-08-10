@@ -16,7 +16,7 @@ module.exports = {
     },
     async get(req, res) {
 
-        const post = await Post.findById(req.params.id).populate('user')
+        const post = await Post.findById(req.params.id).populate(['user', 'replies.user'])
 
         return res.json(post)
 

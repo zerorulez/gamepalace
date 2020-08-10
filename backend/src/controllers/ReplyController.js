@@ -27,7 +27,7 @@ module.exports = {
             imageMimeType = undefined
         }
 
-        Post.findById(req.params.post).then( post => {
+        Post.findById(req.params.post).populate(['user', 'replies.user']).then( post => {
             post.replies.push({
                 description,
                 image,
@@ -37,7 +37,9 @@ module.exports = {
             })
 
             post.save().then( post => {
-                return res.json(post)
+                Post.findById(req.params.post).populate(['user', 'replies.user']).then( post => {
+                    res.json(post)
+                })
             }).catch(err => {
                 return res.status(400).send({ error: "Error creating reply, try again"})
             })
