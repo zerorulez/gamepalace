@@ -59,7 +59,7 @@
 
             <Reply v-for="(reply, index) in thread.replies" :key="index" :reply="reply" />
 
-            <div v-if="thread.replies.length == 0">
+            <div v-if="thread.replies && thread.replies.length == 0">
               <p>Nenhuma resposta encontrado...</p>
             </div>
 
@@ -243,7 +243,10 @@ export default {
         if (this.file !== '') {
           formData.append('file', this.file)
         }
-        formData.append('description', this.reply.description)
+
+        if (this.reply.description) {
+          formData.append('description', this.reply.description)
+        }
         
         let headers = {
           Authorization: 'Bearer ' + this.$store.state.token
@@ -252,7 +255,13 @@ export default {
         axios.post(process.env.VUE_APP_API + '/reply/' + this.thread._id, formData, { headers }).then( res => {
           this.thread = res.data
           this.reply = {}
-          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+          this.file = ''
+          this.fileName = 'Escolher arquivo...'
+          
+          setTimeout(() => {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+          }, 250);
+
         }).catch( (err) => {
           this.errors.push(err.response.data.error)
         })
