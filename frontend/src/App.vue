@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <ModalHome v-if="!$store.state.firstTime" />
     <Lightbox v-if="$store.state.lightbox.active" />
     <Header />
     <router-view/>
@@ -85,13 +86,15 @@
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 import Lightbox from '@/components/Lightbox.vue'
+import ModalHome from '@/components/ModalHome.vue'
 
 export default {
   name: 'App',
   components: {
     Header,
     Footer,
-    Lightbox
+    Lightbox,
+    ModalHome
   }
 }
 </script>

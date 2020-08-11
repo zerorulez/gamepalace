@@ -5,16 +5,25 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User.js')
 
 module.exports = {
-    async get(req, res) {
+    async index(req, res) {
 
         const user = await User.findById(req.userId)
 
         res.send(user)
 
     },
+    async get(req, res) {
+
+        const id = req.params.id
+
+        const user = await User.findById(id).select(['-_id', '-email', '-updatedAt'])
+
+        res.send(user)
+
+    },
     async update(req, res) {
 
-        const { password, newPassword } = req.body
+        const { username, password, newPassword } = req.body
 
         var avatar = undefined
         var avatarMimeType = undefined
@@ -50,6 +59,7 @@ module.exports = {
         }
 
         const updatedUser = await User.findByIdAndUpdate(req.userId, {
+            username,
             avatar,
             avatarMimeType,
             password: confirmPassword

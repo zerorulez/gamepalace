@@ -10,7 +10,8 @@ export default new Vuex.Store({
             image: '',
             type: '',
             active: false
-        }
+        },
+        firstTime: localStorage.getItem('firstTime') == undefined ? false : true
     },
     mutations: {
         setToken (state) {
@@ -23,5 +24,8 @@ export default new Vuex.Store({
         toogleLightbox(state) {
             state.lightbox.active = !state.lightbox.active
         },
+        toogleModal(state) {
+            state.firstTime = localStorage.getItem('firstTime')
+        }
     }
 })

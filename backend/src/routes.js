@@ -26,7 +26,8 @@ routes.post('/signin', AuthController.signIn)
 routes.post('/forgot-password', AuthController.forgotPassword)
 routes.post('/reset-password', AuthController.recoverPassword)
 
-routes.get('/profile', authMiddleware, UserController.get)
+routes.get('/profile', authMiddleware, UserController.index)
+routes.get('/profile/:id', UserController.get)
 routes.put('/profile', authMiddleware, uploadAvatar, UserController.update)
 routes.delete('/profile', authMiddleware, UserController.delete)
 

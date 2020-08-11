@@ -8,8 +8,8 @@
         <div class="col-12 offset-lg-3 col-lg-6">
           <form @submit.prevent="login()">
             <div class="form-group text-left">
-              <label for="user">Usuário</label>
-              <input type="text" v-model="user.username" class="form-control" name="user" id="user">
+              <label for="email">Email</label>
+              <input type="email" v-model="user.email" class="form-control" name="email" id="email">
             </div>
             <div class="form-group text-left">
               <label for="password">Senha</label>
@@ -103,8 +103,8 @@ export default {
       }
     },
     validate() {
-      if (!this.user.username) {
-        this.errors.push('O nome de usuário é obrigatório.');
+      if (!this.user.email) {
+        this.errors.push('O email é obrigatório.');
       }
       if (!this.user.password) {
         this.errors.push('A senha é obrigatória.');

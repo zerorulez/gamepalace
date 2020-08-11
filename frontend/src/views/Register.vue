@@ -11,15 +11,15 @@
               </div>
               <div class="form-group text-left">
                 <label for="email">Email</label>
-                <input type="text" v-model="user.email" class="form-control" name="email" id="email">
+                <input type="text" v-model="user.email" @keydown.space.prevent class="form-control" name="email" id="email">
               </div>
               <div class="form-group text-left">
                 <label for="password">Senha</label>
-                <input type="password" v-model="user.password" class="form-control" name="password" id="password" autocomplete="on">
+                <input type="password" v-model="user.password" @keydown.space.prevent class="form-control" name="password" id="password" autocomplete="on">
               </div>
               <div class="form-group text-left">
                 <label for="confirmPassword">Confirmar Senha</label>
-                <input type="password" v-model="user.confirmPassword" class="form-control" name="confirmPassword" id="confirmPassword" autocomplete="on">
+                <input type="password" v-model="user.confirmPassword" @keydown.space.prevent class="form-control" name="confirmPassword" id="confirmPassword" autocomplete="on">
               </div>
               <div class="custom-control custom-checkbox text-center">
                 <input type="checkbox" v-model="user.terms" class="custom-control-input" id="customCheck1">

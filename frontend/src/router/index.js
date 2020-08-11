@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import Profile from '../views/Profile.vue'
+import UserProfile from '../views/UserProfile.vue'
 import NewThread from '../views/NewThread.vue'
 import Thread from '../views/Thread.vue'
 
@@ -29,6 +30,11 @@ Vue.use(VueRouter)
     path: '/perfil',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/perfil/:id',
+    name: 'UserProfile',
+    component: UserProfile
   },
   {
     path: '/novo-topico',

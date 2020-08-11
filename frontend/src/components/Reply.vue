@@ -7,10 +7,11 @@
           <p>{{ reply.description }}</p>
         </div>
         <div class="reply-footer">
-          <span class="date">{{ reply.createdAt | moment("H:mm - D MMMM") }}</span>
-          <div class="user">
+          <span class="date" v-if="reply.createdAt">{{ reply.createdAt | moment("H:mm - D MMMM") }}</span>
+          <div @click="goToProfile(reply.user._id)" class="user">
             <span class="username" v-if="reply.user">{{ reply.user.username }}</span>
-            <div class="avatar-image" :style="{ 'background-image' : 'url(' + avatarPath + reply.user.avatar + ')'}"></div>
+            <div class="avatar-image" v-if="reply.user && reply.user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + reply.user.avatar + ')'}"></div>
+            <div class="avatar-image default-avatar" v-if="reply.user && !reply.user.avatar"></div>
           </div>
         </div>
       </div>
@@ -28,6 +29,8 @@
       background-color: $light-gray;
       border-radius: 10px;
       margin-bottom: 15px;
+
+      
 
     .reply-image {
       border-radius: 10px 10px 0 0;
@@ -64,10 +67,14 @@
         .user {
           display: flex;
           align-items: center;
+          cursor: pointer;
           .username {
             font-weight: bold;
             padding-right: 15px;
             font-size: 15px;
+          }
+          .default-avatar {
+            background-image: url("../assets/avatar.png");
           }
           .avatar-image {
             width: 40px;
@@ -100,6 +107,9 @@ export default {
     openImage() {
       this.$store.commit('setLightbox', { image: this.reply.image, type: 'image' })
       this.$store.commit('toogleLightbox')
+    },
+    goToProfile(id) {
+      this.$router.push('/perfil/' + id)
     }
   },
   components: {

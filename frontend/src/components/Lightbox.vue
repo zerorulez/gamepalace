@@ -42,7 +42,7 @@ export default {
 .lightbox {
   top: 0;
   left: 0;
-  background-color: rgba($dark-gray, .8);
+  background-color: rgba($dark-gray, .7);
   position: fixed;
   height: 100vh;
   width: 100vw;

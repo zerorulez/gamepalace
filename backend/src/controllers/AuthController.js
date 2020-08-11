@@ -16,7 +16,9 @@ function generateToken(params) {
 module.exports = {
     async signUp(req, res) {
         
-        const { username, email, password } = req.body
+        const { username, password } = req.body
+
+        const email = req.body.email.toLowerCase()
 
         const hasUsername = await User.findOne({ username: username })
         if (hasUsername) {
@@ -45,9 +47,11 @@ module.exports = {
     },
     async signIn(req, res) {
         
-        const { username, password } = req.body
+        const { password } = req.body
+        
+        const email = req.body.email.toLowerCase()
 
-        const user = await User.findOne({ username: username }).select('+password')
+        const user = await User.findOne({ email: email }).select('+password')
         if (!user) {
             return res.status(400).json({ error: 'User not found' })
         }

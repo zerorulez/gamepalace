@@ -10,12 +10,13 @@
           </div>
           <div class="user">
             <span class="username">{{ thread.user.username }}</span>
-            <div class="avatar-image" v-if="thread.user" :style="{ 'background-image' : 'url(' + avatarPath + thread.user.avatar + ')'}"></div>
+            <div class="avatar-image" v-if="thread.user && thread.user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + thread.user.avatar + ')'}"></div>
+            <div class="avatar-image default-avatar" v-if="thread.user && !thread.user.avatar"></div>
           </div>
         </div>
         <div class="thread-footer">
           <span class="replies">{{ thread.replies.length }} respostas</span>
-          <span class="date">{{ thread.createdAt | moment("H:mm - D MMMM") }}</span>
+          <span class="date" v-if="thread.createdAt">{{ thread.createdAt | moment("H:mm - D MMMM") }}</span>
         </div>
       </div>
     </div>
@@ -104,6 +105,11 @@ export default {
               display: block;
             }
           }
+          
+          .default-avatar {
+            background-image: url("../assets/avatar.png");
+          }
+
           .avatar-image {
             width: 40px;
             height: 40px;

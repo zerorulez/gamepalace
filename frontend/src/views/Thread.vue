@@ -11,9 +11,10 @@
                   <!-- <span class="game text-blue">Streets of Rage</span> -->
                   <h1>{{ thread.title }}</h1>
                 </div>
-                <div class="user">
+                <div @click="goToProfile(thread.user._id)" class="user">
                   <span class="username" v-if="thread.user">{{ thread.user.username }}</span>
-                  <div class="avatar-image" v-if="thread.user" :style="{ 'background-image' : 'url(' + avatarPath + thread.user.avatar + ')'}"></div>
+                  <div class="avatar-image" v-if="thread.user && thread.user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + thread.user.avatar + ')'}"></div>
+                  <div class="avatar-image default-avatar" v-if="thread.user && !thread.user.avatar"></div>
                 </div>
               </div>
               <div class="thread-description">
@@ -21,7 +22,7 @@
               </div>
               <div class="thread-footer">
                 <span class="replies" v-if="thread.replies">{{ thread.replies.length }} respostas</span>
-                <span class="date">{{ thread.createdAt | moment("H:mm - D MMMM") }}</span>
+                <span class="date" v-if="thread.createdAt">{{ thread.createdAt | moment("H:mm - D MMMM") }}</span>
               </div>
             </div>
           </div>
@@ -122,6 +123,7 @@
           align-items: center;
           padding-left: 30px;
           flex-shrink: 0;
+          cursor: pointer;
           .username {
             font-weight: bold;
             padding-right: 15px;
@@ -132,6 +134,11 @@
               display: block;
             }
           }
+          
+          .default-avatar {
+            background-image: url("../assets/avatar.png");
+          }
+          
           .avatar-image {
             width: 40px;
             height: 40px;
@@ -287,6 +294,9 @@ export default {
     openImage() {
       this.$store.commit('setLightbox', { image: this.thread.image, type: 'image' })
       this.$store.commit('toogleLightbox')
+    },
+    goToProfile(id) {
+      this.$router.push('/perfil/' + id)
     }
   },
   components: {

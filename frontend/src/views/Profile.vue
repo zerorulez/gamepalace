@@ -14,15 +14,20 @@
           <div class="form">
             <div class="avatar-wrapper">
               <div class="cover"></div>
-              <div class="avatar" v-if="user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + user.avatar + ')'}"></div>
+              <div class="avatar" @click="openImage()" v-if="user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + user.avatar + ')'}"></div>
+              <div class="avatar default-avatar" v-if="!user.avatar"></div>
               <h1 class="text-center">{{ user.username }}</h1>
-              <p>Registro: {{ user.createdAt }}</p>
+              <p v-if="user.createdAt">Registro: {{ user.createdAt | moment("DD/MM/YYYY") }}</p>
             </div>
             <form @submit.prevent="update()" class="container">
               <!-- <div class="form-group text-left">
                 <label for="user">Usuário</label>
                 <input type="text" v-model="user.username" class="form-control" name="user" id="user" disabled>
               </div> -->
+              <div class="form-group text-left">
+                <label for="user">Usuário</label>
+                <input type="text" v-model="user.username" class="form-control" name="user" id="user">
+              </div>
               <div class="form-group text-left">
                 <label for="email">Email</label>
                 <input type="text" v-model="user.email" class="form-control" name="email" id="email" disabled>
@@ -82,6 +87,10 @@
     border-top-left-radius: 1rem;
     border-top-right-radius: 1rem;
 
+    .default-avatar {
+      background-image: url("../assets/avatar.png");
+    }
+
     .avatar {
       width: 220px;
       height: 220px;
@@ -90,6 +99,7 @@
       background-color: #000000;
       background-position: center;
       background-size: cover;
+      cursor: pointer;
     }
 
     h1 {
@@ -189,6 +199,9 @@ export default {
 
         let formData = new FormData()
 
+        
+        formData.append('username', this.user.username)
+
         if (this.file) {
           formData.append('file', this.file)
         }
@@ -211,6 +224,12 @@ export default {
       }
     },
     validate() {
+      if (this.user.username == '') {
+        this.errors.push('O usuário é obrigatório.');
+      }
+      if (this.user.username && this.user.username.length < 3) {
+        this.errors.push('O usuário deve conter pelo menos 3 dígitos.');
+      }
       if (this.user.password && this.user.password.length < 6) {
         this.errors.push('A senha deve conter pelo menos 6 dígitos.');
       }
@@ -225,6 +244,10 @@ export default {
       localStorage.removeItem('token')
       this.$store.commit('setToken')
       this.$router.push('/login')
+    },
+    openImage() {
+      this.$store.commit('setLightbox', { image: this.user.avatar, type: 'avatar' })
+      this.$store.commit('toogleLightbox')
     }
   },
   components: {
