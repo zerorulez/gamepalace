@@ -47,8 +47,7 @@
       width: 100%;
 
       .reply-header {
-        display: flex;
-        justify-content: space-between;
+        white-space: pre-wrap;
       }
 
       .reply-footer {

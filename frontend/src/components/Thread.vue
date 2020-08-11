@@ -92,6 +92,8 @@ export default {
         .user {
           display: flex;
           align-items: center;
+          padding-left: 30px;
+          flex-shrink: 0;
           .username {
             font-weight: bold;
             padding-right: 15px;

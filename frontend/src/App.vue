@@ -22,6 +22,7 @@
   flex-direction:column; 
   justify-content: space-between;
   color: $ligther-gray;
+  overflow-wrap: anywhere;
   
   input {
     background-color: $dark-gray;
@@ -35,8 +36,6 @@
 
   p {
     margin-bottom: 0;
-    overflow-wrap: anywhere;
-    white-space: pre-wrap;
   }
 
   a {

@@ -120,6 +120,8 @@
         .user {
           display: flex;
           align-items: center;
+          padding-left: 30px;
+          flex-shrink: 0;
           .username {
             font-weight: bold;
             padding-right: 15px;
@@ -140,6 +142,10 @@
             background-size: cover;
           }
         }
+      }
+
+      .thread-description {
+        white-space: pre-wrap;
       }
 
       .thread-footer {
