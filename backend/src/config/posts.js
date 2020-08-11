@@ -12,7 +12,7 @@ module.exports = {
       crypto.randomBytes(16, (err, hash) => {
         if (err) cb(err);
 
-        file.key = `${hash.toString("hex")}-${file.originalname.replace(' ', '_')}`;
+        file.key = `${hash.toString("hex")}-${file.originalname.replace(/ /g, "_")}`;
 
         cb(null, file.key);
       });
