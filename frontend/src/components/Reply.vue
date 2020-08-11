@@ -30,8 +30,6 @@
       border-radius: 10px;
       margin-bottom: 15px;
 
-      
-
     .reply-image {
       border-radius: 10px 10px 0 0;
       background-color: #000;
@@ -39,6 +37,7 @@
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
+      cursor: pointer;
       
       @media (min-width: 992px) {
         height: 250px;
