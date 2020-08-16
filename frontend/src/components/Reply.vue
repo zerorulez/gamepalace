@@ -4,10 +4,10 @@
       <!-- <div class="reply-image" @click="openImage()" v-if="reply.image" :style="{ 'background-image' : 'url(' + imagePath + reply.image + ')'}"></div> -->
       <div class="reply-content">
         <div class="reply-header">
-          <p v-html="reply.description" class="pb-4"></p>
-          <img @click="openImage()" v-if="reply.image" :src="imagePath + reply.image" :alt="reply.description" class="img-fluid pb-2 reply-image-max">
+          <p v-html="reply.description"></p>
+          <img @click="openImage()" v-if="reply.image" :src="imagePath + reply.image" :alt="reply.description" class="img-fluid mt-4 reply-image-max">
         </div>
-        <div class="reply-footer">
+        <div class="reply-footer pt-2">
           <span class="date" v-if="reply.createdAt">{{ reply.createdAt | moment("H:mm - D MMMM") }}</span>
           <div @click="goToProfile(reply.user._id)" class="user">
             <span class="username" v-if="reply.user">{{ reply.user.username }}</span>

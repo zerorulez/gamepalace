@@ -18,9 +18,9 @@
                 </div>
               </div>
               <div class="thread-description">
-                <p v-html="thread.description" class="pb-4"></p>
+                <p v-html="thread.description"></p>
               </div>
-              <div class="thread-footer">
+              <div class="thread-footer pt-4">
                 <span class="replies" v-if="thread.replies">{{ thread.replies.length }} respostas</span>
                 <span class="date" v-if="thread.createdAt">{{ thread.createdAt | moment("H:mm - D MMMM") }}</span>
               </div>
