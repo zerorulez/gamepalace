@@ -4,8 +4,8 @@
       <!-- <div class="reply-image" @click="openImage()" v-if="reply.image" :style="{ 'background-image' : 'url(' + imagePath + reply.image + ')'}"></div> -->
       <div class="reply-content">
         <div class="reply-header">
-          <p v-html="reply.description" class="pb-2"></p>
-          <img @click="openImage()" v-if="reply.image" :src="imagePath + reply.image" :alt="reply.description" class="img-fluid pb-2">
+          <p v-html="reply.description" class="pb-4"></p>
+          <img @click="openImage()" v-if="reply.image" :src="imagePath + reply.image" :alt="reply.description" class="img-fluid pb-2 reply-image-max">
         </div>
         <div class="reply-footer">
           <span class="date" v-if="reply.createdAt">{{ reply.createdAt | moment("H:mm - D MMMM") }}</span>
@@ -51,12 +51,16 @@
 
       .reply-header {
         white-space: pre-wrap;
+        .reply-image-max {
+          max-width: 300px;
+          max-height: 300px;
+        }
       }
 
       .reply-footer {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-end;
         font-size: 12px;
 
         .date {
@@ -98,7 +102,7 @@ export default {
   props: ['reply'],
   data() {
     return {
-      imagePath: process.env.VUE_APP_API + '/images/posts/thumbnail_',
+      imagePath: process.env.VUE_APP_API + '/images/posts/',
       avatarPath: process.env.VUE_APP_API + '/images/avatars/thumbnail_'
     }
   },

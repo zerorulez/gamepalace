@@ -18,7 +18,7 @@
                 </div>
               </div>
               <div class="thread-description">
-                <p v-html="thread.description"></p>
+                <p v-html="thread.description" class="pb-4"></p>
               </div>
               <div class="thread-footer">
                 <span class="replies" v-if="thread.replies">{{ thread.replies.length }} respostas</span>
