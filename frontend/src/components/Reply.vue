@@ -1,10 +1,11 @@
 <template>
   <div class="reply">
     <div class="reply-wrapper">
-      <div class="reply-image" @click="openImage()" v-if="reply.image" :style="{ 'background-image' : 'url(' + imagePath + reply.image + ')'}"></div>
+      <!-- <div class="reply-image" @click="openImage()" v-if="reply.image" :style="{ 'background-image' : 'url(' + imagePath + reply.image + ')'}"></div> -->
       <div class="reply-content">
         <div class="reply-header">
-          <p>{{ reply.description }}</p>
+          <p v-html="reply.description" class="pb-2"></p>
+          <img @click="openImage()" :src="imagePath + reply.image" alt="" srcset="">
         </div>
         <div class="reply-footer">
           <span class="date" v-if="reply.createdAt">{{ reply.createdAt | moment("H:mm - D MMMM") }}</span>
@@ -98,7 +99,7 @@ export default {
   props: ['reply'],
   data() {
     return {
-      imagePath: process.env.VUE_APP_API + '/images/posts/',
+      imagePath: process.env.VUE_APP_API + '/images/posts/thumbnail_',
       avatarPath: process.env.VUE_APP_API + '/images/avatars/thumbnail_'
     }
   },

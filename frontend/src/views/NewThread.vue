@@ -23,7 +23,25 @@
                 </div>
                 <div class="form-group text-left">
                   <label for="description">Mensagem</label>
-                  <textarea name="description" class="form-control" id="description" v-model="thread.description" cols="30" rows="10"></textarea>
+                  <editor
+                    :api-key="TinyMCEKey"
+                    v-model="thread.description"
+                    :init="{
+                      height: 500,
+                      menubar: false,
+                      language: 'pt_BR',
+                      plugins: [
+                        'advlist autolink lists link image charmap print preview anchor',
+                        'searchreplace visualblocks code fullscreen',
+                        'insertdatetime media table paste code help wordcount'
+                      ],
+                      toolbar:
+                        'undo redo | bold italic backcolor | \
+                        alignleft aligncenter alignright alignjustify | \
+                        bullist numlist outdent indent | removeformat | help'
+                    }"
+                  />
+                  <!-- <textarea name="description" class="form-control" id="description" v-model="thread.description" cols="30" rows="10"></textarea> -->
                 </div>
                 <div class="button">
                   <button type="submit" class="btn btn-default">Enviar</button>
@@ -121,7 +139,7 @@
 </style>
 
 <script>
-
+import Editor from '@tinymce/tinymce-vue'
 import axios from 'axios'
 
 export default {
@@ -132,6 +150,7 @@ export default {
       file: '',
       fileName: 'Escolher arquivo...',
       errors: [],
+      TinyMCEKey: process.env.VUE_APP_TINYMCE_KEY
     }
   },
   methods: {
@@ -173,9 +192,14 @@ export default {
       if (!this.thread.description) {
         this.errors.push('Uma mensagem é obrigatória.');
       }
-    }
+    },
+    beforeDestroy() {
+      // Always destroy your editor instance when it's no longer needed
+      this.editor.destroy()
+    },
   },
   components: {
+     'editor': Editor
   }
 }
 </script>

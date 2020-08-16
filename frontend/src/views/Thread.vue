@@ -18,7 +18,7 @@
                 </div>
               </div>
               <div class="thread-description">
-                <p>{{ thread.description }}</p>
+                <p v-html="thread.description"></p>
               </div>
               <div class="thread-footer">
                 <span class="replies" v-if="thread.replies">{{ thread.replies.length }} respostas</span>
@@ -41,7 +41,24 @@
                 </div>
                 <div class="form-group text-left">
                   <label for="description">Mensagem</label>
-                  <textarea name="description" class="form-control" id="description" v-model="reply.description" cols="30" rows="10"></textarea>
+                  <editor
+                    :api-key="TinyMCEKey"
+                    v-model="reply.description"
+                    :init="{
+                      height: 300,
+                      menubar: false,
+                      language: 'pt_BR',
+                      plugins: [
+                        'advlist autolink lists link image charmap print preview anchor',
+                        'searchreplace visualblocks code fullscreen',
+                        'insertdatetime media table paste code help wordcount'
+                      ],
+                      toolbar:
+                        'undo redo | bold italic backcolor | \
+                        alignleft aligncenter alignright alignjustify | \
+                        bullist numlist outdent indent | removeformat | help'
+                    }"
+                  />
                 </div>
                 <div class="buttons">
                   <!-- <button class="btn btn-gray">Adicioanr Imagem</button> -->
@@ -88,7 +105,7 @@
       height: 150px;
       background-repeat: no-repeat;
       background-position: center;
-      background-size: cover;
+      background-size: contain;
       cursor: pointer;
       
       @media (min-width: 992px) {
@@ -222,6 +239,7 @@
 <script>
 import Reply from '@/components/Reply.vue'
 import axios from 'axios'
+import Editor from '@tinymce/tinymce-vue'
 
 export default {
   name: 'Thread',
@@ -232,6 +250,7 @@ export default {
       file: '',
       fileName: 'Escolher arquivo...',
       errors: [],
+      TinyMCEKey: process.env.VUE_APP_TINYMCE_KEY,
       imagePath: process.env.VUE_APP_API + '/images/posts/',
       avatarPath: process.env.VUE_APP_API + '/images/avatars/thumbnail_'
     }
@@ -300,7 +319,8 @@ export default {
     }
   },
   components: {
-    Reply
+    Reply,
+     'editor': Editor
   }
 }
 </script>
