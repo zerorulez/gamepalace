@@ -1,7 +1,9 @@
 <template>
   <div class="thread">
     <div class="thread-wrapper" @click="goToThread(thread._id)">
-      <div class="thread-image" v-if="thread.image" :style="{ 'background-image' : 'url(' + imagePath + thread.image + ')'}"></div>
+      <div class="thread-image-wrapper">
+        <div class="thread-image" v-if="thread.image" :style="{ 'background-image' : 'url(' + imagePath + thread.image + ')'}"></div>
+      </div>
       <div class="thread-content">
         <div class="thread-header">
           <div class="header-wrapper">
@@ -55,17 +57,28 @@ export default {
     display: flex;
     justify-content: space-between;
     cursor: pointer;
+    transition: all .2s ease-in-out;
 
-    .thread-image {
-      min-width: 80px;
-      height: auto;
+    &:hover {
+      margin-left: 7.5px;
+      margin-right: -7.5px;
+    }
+
+    .thread-image-wrapper {
       border-radius: 10px 0 0 10px;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
+      overflow: hidden;
+      display: flex;
+      
+      .thread-image {
+        width: 100px;
+        height: auto;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
 
-      @media (min-width: 992px) {
-        min-width: 300px;
+        @media (min-width: 992px) {
+          width: 300px;
+        }
       }
     }
 

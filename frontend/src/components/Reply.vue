@@ -4,7 +4,7 @@
       <!-- <div class="reply-image" @click="openImage()" v-if="reply.image" :style="{ 'background-image' : 'url(' + imagePath + reply.image + ')'}"></div> -->
       <div class="reply-content">
         <div class="reply-header">
-          <p v-html="reply.description"></p>
+          <p v-if="reply.description" v-html="reply.description"></p>
           <img @click="openImage()" v-if="reply.image" :src="imagePath + reply.image" :alt="reply.description" class="img-fluid mt-4 reply-image-max">
         </div>
         <div class="reply-footer pt-2">
