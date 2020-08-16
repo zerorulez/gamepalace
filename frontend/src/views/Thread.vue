@@ -28,9 +28,15 @@
           </div>
 
           <div class="replies">
-            <h2>Respostas</h2>
+            <div class="replies-header">
+              <h2>Respostas</h2>
+              <div class="reply-toogle" @click="toggleFormStatus()">
+                <strong class="pr-2">Responder</strong>
+                <img src="../assets/reply-icon.svg" alt="reply icon" class="img-fluid">
+              </div>
+            </div>
 
-            <div v-if="$store.state.token" class="reply-form">
+            <div v-if="$store.state.token && replyFormStatus" class="reply-form">
               <form @submit.prevent="newReply()" action="">
                 <div class="form-group text-left">
                   <label for="avatar">Imagem</label>
@@ -78,7 +84,7 @@
             <Reply v-for="(reply, index) in thread.replies" :key="index" :reply="reply" />
 
             <div v-if="thread.replies && thread.replies.length == 0">
-              <p>Nenhuma resposta encontrado...</p>
+              <p>Nenhuma resposta encontrada...</p>
             </div>
 
           </div>
@@ -173,7 +179,6 @@
       }
 
       .thread-footer {
-        padding-top: 30px;
         display: flex;
         justify-content: space-between;
         font-size: 12px;
@@ -186,12 +191,20 @@
   }
 
   .replies {
-    h2 {
-      font-weight: bold;
-      font-size: 20px;
-      margin: 0;
-      color: white;
-      padding-bottom: 15px;
+    .replies-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      h2 {
+        font-weight: bold;
+        font-size: 20px;
+        margin: 0;
+        color: white;
+      }
+      .reply-toogle {
+        cursor: pointer;
+      }
     }
 
     .reply-form {
@@ -250,6 +263,7 @@ export default {
       file: '',
       fileName: 'Escolher arquivo...',
       errors: [],
+      replyFormStatus: false,
       TinyMCEKey: process.env.VUE_APP_TINYMCE_KEY,
       imagePath: process.env.VUE_APP_API + '/images/posts/',
       avatarPath: process.env.VUE_APP_API + '/images/avatars/thumbnail_'
@@ -316,6 +330,9 @@ export default {
     },
     goToProfile(id) {
       this.$router.push('/perfil/' + id)
+    },
+    toggleFormStatus() {
+      this.replyFormStatus = !this.replyFormStatus
     }
   },
   components: {

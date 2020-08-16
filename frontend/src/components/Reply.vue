@@ -5,7 +5,7 @@
       <div class="reply-content">
         <div class="reply-header">
           <p v-html="reply.description" class="pb-2"></p>
-          <img @click="openImage()" :src="imagePath + reply.image" alt="" srcset="">
+          <img @click="openImage()" v-if="reply.image" :src="imagePath + reply.image" :alt="reply.description" class="img-fluid pb-2">
         </div>
         <div class="reply-footer">
           <span class="date" v-if="reply.createdAt">{{ reply.createdAt | moment("H:mm - D MMMM") }}</span>
@@ -54,7 +54,6 @@
       }
 
       .reply-footer {
-        padding-top: 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
