@@ -30,15 +30,16 @@
                       height: 500,
                       menubar: false,
                       language: 'pt_BR',
+                      content_style: 'body {color: #707070; font-family: \'Montserrat\', sans-serif; }',
                       plugins: [
                         'advlist autolink lists link image charmap print preview anchor',
                         'searchreplace visualblocks code fullscreen',
-                        'insertdatetime media table paste code help wordcount'
+                        'insertdatetime media table paste code help wordcount media'
                       ],
                       toolbar:
                         'undo redo | bold italic backcolor | \
                         alignleft aligncenter alignright alignjustify | \
-                        bullist numlist outdent indent | removeformat | help'
+                        media | bullist numlist outdent indent | removeformat | help'
                     }"
                   />
                   <!-- <textarea name="description" class="form-control" id="description" v-model="thread.description" cols="30" rows="10"></textarea> -->
@@ -101,7 +102,7 @@
       //     margin-left: 15px;
       //     min-width: 40px;
       //     height: 40px;
-      //     border: 1px solid $ligther-gray;
+      //     border: 1px solid $lighter-gray;
       //     border-radius: 7px;
       //     background-repeat: no-repeat;
       //     background-position: center;
@@ -111,7 +112,7 @@
     }
     .custom-file-label {
       background-color: $dark-gray;
-      border: 1px solid $ligther-gray;
+      border: 1px solid $lighter-gray;
       overflow: hidden;
     }
 

@@ -82,7 +82,7 @@
           .avatar-image {
             width: 40px;
             height: 40px;
-            border: 1px solid $ligther-gray;
+            border: 1px solid $lighter-gray;
             border-radius: 7px;
             background-repeat: no-repeat;
             background-position: center;

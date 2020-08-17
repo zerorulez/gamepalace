@@ -62,6 +62,7 @@ export default {
     &:hover {
       margin-left: 7.5px;
       margin-right: -7.5px;
+      box-shadow: 3px 3px 5px rgba(black, .5);
     }
 
     .thread-image-wrapper {
@@ -126,7 +127,7 @@ export default {
           .avatar-image {
             width: 40px;
             height: 40px;
-            border: 1px solid $ligther-gray;
+            border: 1px solid $lighter-gray;
             border-radius: 7px;
             background-repeat: no-repeat;
             background-position: center;

@@ -95,7 +95,7 @@
       width: 220px;
       height: 220px;
       border-radius: 100%;
-      border: 3px solid $ligther-gray;
+      border: 3px solid $lighter-gray;
       background-color: #000000;
       background-position: center;
       background-size: cover;
@@ -122,7 +122,7 @@
 
     .custom-file-label {
       background-color: $dark-gray;
-      border: 1px solid $ligther-gray;
+      border: 1px solid $lighter-gray;
       overflow: hidden;
     }
 

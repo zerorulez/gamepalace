@@ -22,17 +22,76 @@
   display:flex; 
   flex-direction:column; 
   justify-content: space-between;
-  color: $ligther-gray;
+  color: $lighter-gray;
   overflow-wrap: anywhere;
-  
+
+  // SKIN TINYMCE
+  .tox .tox-edit-area__iframe {
+    background-color: inherit;
+  }
+
+  .tox .tox-toolbar__primary {
+    background: $light-gray;
+    border-bottom: 1px solid $dark-gray;
+  }
+
+  .tox .tox-statusbar {
+    background-color: $light-gray;
+    border-top: 1px solid $dark-gray;
+  }
+
+  .tox-tinymce {
+    border: 1px solid $dark-gray;
+  }
+
+  .tox:not([dir=rtl]) .tox-toolbar__group:not(:last-of-type) {
+    border-right: 1px solid $dark-gray;
+  }
+
+  .tox .tox-tbtn svg {
+    fill: $lighter-gray;
+  }
+
+  .tox .tox-split-button:hover {
+    box-shadow: 0 0 0 1px $lighter-gray inset;
+  }
+
+  .tox .tox-tbtn:hover {
+    background: $lighter-gray;
+    svg {
+      fill: $dark-gray;
+    }
+  }
+
+  .tox .tox-statusbar__wordcount, .tox .tox-statusbar__path-item {
+    color: $lighter-gray;
+  }
+
+  .tox .tox-tbtn--enabled {
+    background: $lighter-gray;
+    svg {
+      fill: $dark-gray;
+    }
+  }
+
+  // FIM SKIN TINYMCE
+
+  // BORDA EMBED THREAD
+  .thread-description {
+    iframe {
+      border: 0;
+    }
+  }
+  // FIM BORDA EMBED THREAD
+
   input {
     background-color: $dark-gray;
-    border: 1px solid $ligther-gray;
+    border: 1px solid $lighter-gray;
   }
 
   textarea {
     background-color: $dark-gray;
-    border: 1px solid $ligther-gray;
+    border: 1px solid $lighter-gray;
   }
 
   p {
@@ -48,8 +107,8 @@
   }
 
   .btn-default {
-    border: 1px solid $ligther-gray;
-    color: $ligther-gray;
+    border: 1px solid $lighter-gray;
+    color: $lighter-gray;
     &:hover {
       border: 1px solid $blue;
       background-color: $blue;
@@ -58,11 +117,11 @@
   }
 
   .btn-gray {
-    border: 1px solid $ligther-gray;
-    color: $ligther-gray;
+    border: 1px solid $lighter-gray;
+    color: $lighter-gray;
     &:hover {
-      border: 1px solid $ligther-gray;
-      background-color: $ligther-gray;
+      border: 1px solid $lighter-gray;
+      background-color: $lighter-gray;
       color: white;
     }
   }
