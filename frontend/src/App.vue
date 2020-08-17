@@ -31,21 +31,22 @@
   }
 
   .tox .tox-toolbar__primary {
-    background: $light-gray;
-    border-bottom: 1px solid $dark-gray;
+    background: $dark-gray;
+    border-bottom: 1px solid $lighter-gray;
   }
 
   .tox .tox-statusbar {
     background-color: $light-gray;
-    border-top: 1px solid $dark-gray;
+    border-top: 1px solid $lighter-gray;
   }
 
   .tox-tinymce {
-    border: 1px solid $dark-gray;
+    border: 1px solid $lighter-gray;
+    border-radius: 4px;
   }
 
   .tox:not([dir=rtl]) .tox-toolbar__group:not(:last-of-type) {
-    border-right: 1px solid $dark-gray;
+    border-right: 1px solid $lighter-gray;
   }
 
   .tox .tox-tbtn svg {
