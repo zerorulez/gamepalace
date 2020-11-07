@@ -27,17 +27,6 @@ module.exports = {
 
         if (req.file) {
             image = req.file.filename
-            imageMimeType = req.file.mimetype
-
-            let folder = await path.resolve(__dirname, "..")
-
-            sharp(req.file.path).resize(350).toFile(folder + '/images/posts/thumbnail_' + image, (err, resizeImage) => {
-                if (err) {
-                    return res.status(400).send({ error: "Error converting image"})
-                }
-            })
-        } else {
-            return res.status(400).send({ error: "Error uploading image"})
         }
 
         Post.create({

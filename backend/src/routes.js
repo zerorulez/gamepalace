@@ -2,7 +2,7 @@ const express = require('express')
 const multer = require('multer')
 const avatarConfig = require('./config/avatar')
 const postsConfig = require('./config/posts')
-// const rateLimit = require("express-rate-limit");
+// const rateLimit = require("express-rate-limit")
 
 const authMiddleware = require('./middlewares/auth')
 
