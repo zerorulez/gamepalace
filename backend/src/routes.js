@@ -1,7 +1,7 @@
 const express = require('express')
-const multer = require('multer')
-const avatarConfig = require('./config/avatar')
-const postsConfig = require('./config/posts')
+// const multer = require('multer')
+// const avatarConfig = require('./config/avatar')
+// const postsConfig = require('./config/posts')
 // const rateLimit = require("express-rate-limit")
 
 const authMiddleware = require('./middlewares/auth')
@@ -18,8 +18,8 @@ const routes = express.Router()
 //     max: 1
 // });
 
-const uploadAvatar = multer(avatarConfig).single('file')
-const uploadPostImage = multer(postsConfig).single('file')
+// const uploadAvatar = multer(avatarConfig).single('file')
+// const uploadPostImage = multer(postsConfig).single('file')
 
 routes.post('/signup', AuthController.signUp)
 routes.post('/signin', AuthController.signIn)
@@ -27,15 +27,15 @@ routes.post('/forgot-password', AuthController.forgotPassword)
 routes.post('/reset-password', AuthController.recoverPassword)
 
 routes.get('/profile', authMiddleware, UserController.index)
-routes.get('/profile/:id', UserController.get)
-routes.put('/profile', authMiddleware, uploadAvatar, UserController.update)
+routes.get('/profile/:username', UserController.get)
+routes.put('/profile', authMiddleware, UserController.update)
 routes.delete('/profile', authMiddleware, UserController.delete)
 
 routes.get('/post', PostController.index)
 routes.get('/post/:id', PostController.get)
-routes.post('/post', authMiddleware, uploadPostImage, PostController.store)
+routes.post('/post', authMiddleware, PostController.store)
 
-routes.post('/reply/:post', authMiddleware, uploadPostImage, ReplyController.store)
+routes.post('/reply/:id', authMiddleware, ReplyController.store)
 // routes.get('/posts/:_id', PostController.get)
 // routes.post('/posts', apiLimiter, multer(multerConfig).single('file'), PostController.store)
 

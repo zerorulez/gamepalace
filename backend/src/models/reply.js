@@ -1,22 +1,21 @@
 const { Model, DataTypes } = require('sequelize');
 
-class post extends Model {
+class reply extends Model {
     static init(connection) {
         super.init({
-          title: DataTypes.STRING,
           description: DataTypes.STRING
         }, {
           sequelize: connection,
           defaultScope: {
-            attributes: { exclude: [ 'userId' ] }
+            attributes: { exclude: [ 'userId', 'postId' ] }
           }
         })
     }
 
     static associate(models) {
       this.belongsTo(models.user, { foreignKey: 'userId', as: 'user' });
-      this.hasMany(models.reply, { foreignKey: 'postId', as: 'replies' });
+      this.belongsTo(models.post, { foreignKey: 'postId', as: 'post' });
     }
 }
 
-module.exports = post;
+module.exports = reply;

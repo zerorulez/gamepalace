@@ -1,23 +1,24 @@
 <template>
   <div class="thread">
-    <div class="thread-wrapper" @click="goToThread(thread._id)">
+    <div class="thread-wrapper" @click="goToThread(thread.id)">
       <div class="thread-image-wrapper">
-        <div class="thread-image" v-if="thread.image" :style="{ 'background-image' : 'url(' + imagePath + thread.image + ')'}"></div>
+        <!-- <div class="thread-image" v-if="thread.image" :style="{ 'background-image' : 'url(' + imagePath + thread.image + ')'}"></div> -->
       </div>
       <div class="thread-content">
         <div class="thread-header">
           <div class="header-wrapper">
             <!-- <span class="game text-blue">Streets of Rage</span> -->
             <h2>{{ thread.title }}</h2>
+            <p>{{  thread.description }}</p>
           </div>
           <div class="user">
-            <span class="username">{{ thread.user.username }}</span>
-            <div class="avatar-image" v-if="thread.user && thread.user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + thread.user.avatar + ')'}"></div>
+            <span class="username" v-if="thread.user">{{ thread.user.username }}</span>
+            <!-- <div class="avatar-image" v-if="thread.user && thread.user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + thread.user.avatar + ')'}"></div> -->
             <div class="avatar-image default-avatar" v-if="thread.user && !thread.user.avatar"></div>
           </div>
         </div>
         <div class="thread-footer">
-          <span class="replies">{{ thread.replies.length }} respostas</span>
+          <!-- <span class="replies">{{ thread.replies.length }} respostas</span> -->
           <span class="date" v-if="thread.createdAt">{{ thread.createdAt | moment("H:mm - D MMMM") }}</span>
         </div>
       </div>

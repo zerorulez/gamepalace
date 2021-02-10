@@ -5,7 +5,7 @@ const mailer = require('../modules/mailer')
 
 require('dotenv/config');
 
-const User = require('../models/User.js')
+const User = require('../models/user.js')
 
 function generateToken(params) {
     return jwt.sign(params , process.env.JWT_SECRET, {
@@ -15,17 +15,16 @@ function generateToken(params) {
 
 module.exports = {
     async signUp(req, res) {
-        
         const { username, password } = req.body
 
         const email = req.body.email.toLowerCase()
 
-        const hasUsername = await User.findOne({ username: username })
+        const hasUsername = await User.findOne({ where: { username: username } })
         if (hasUsername) {
             return res.status(400).json({ error: 'Username already exists' })
         }
 
-        const hasEmail = await User.findOne({ email: email })
+        const hasEmail = await User.findOne({ where: { email: email } })
         if (hasEmail) {
             return res.status(400).json({ error: 'Email already exists' })
         }
@@ -33,7 +32,7 @@ module.exports = {
         User.create({
             username,
             email,
-            password
+            password: bcrypt.hashSync(password, 8)
         }).then( user => {
             user.password = undefined
             return res.json({
@@ -51,7 +50,11 @@ module.exports = {
         
         const email = req.body.email.toLowerCase()
 
-        const user = await User.findOne({ email: email }).select('+password')
+        const user = await User.findOne({
+            where: { email: email },
+            attributes: { include: ['password'] },
+        })
+
         if (!user) {
             return res.status(400).json({ error: 'User not found' })
         }
@@ -60,7 +63,10 @@ module.exports = {
             return res.status(400).send({ error: 'Invalid password'})
         }
 
+        user.email = undefined
         user.password = undefined
+        user.passwordResetToken = undefined
+        user.passwordResetExpires = undefined
 
         res.send({ 
             user, 
@@ -72,7 +78,7 @@ module.exports = {
         
         const { email } = req.body
 
-        const user = await User.findOne({ email: email })
+        const user = await User.findOne({ where: { email: email } })
         if (!user) {
             return res.status(400).json({ error: 'User not found' })
         }
@@ -82,15 +88,17 @@ module.exports = {
         const now = new Date()
         now.setHours(now.getHours() + 1)
 
-        await User.findByIdAndUpdate(user.id,
-        {
-            passwordResetToken: token,
-            passwordResetExpires: now
-        })
+        await User.update(
+            {
+                passwordResetToken: token,
+                passwordResetExpires: now
+            },
+            { where: { id: user.id }}
+        )
 
         mailer.sendMail({
             to: email,
-            from: 'zero@bbl.gg',
+            from: 'luc4s.rib3iro@gmail.com',
             subject: 'Message',
             text: token
         }).then( mail => {
@@ -104,7 +112,10 @@ module.exports = {
         
         const { email, token, password } = req.body
 
-        const user = await User.findOne({ email: email }).select('+passwordResetToken passwordResetExpires')
+        const user = await User.findOne({
+            where: { email: email },
+            attributes: { include: ['passwordResetToken', 'passwordResetExpires'] },
+        })
         if (!user) {
             return res.status(400).json({ error: 'User not found' })
         }
@@ -118,9 +129,7 @@ module.exports = {
             return res.status(400).json({ error: 'Token expired, generate a new one' })
         }
 
-        user.password = password
-
-        await user.save()
+        await user.update({ password: bcrypt.hashSync(password, 8) })
 
         res.send()
         

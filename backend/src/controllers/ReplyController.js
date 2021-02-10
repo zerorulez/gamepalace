@@ -1,7 +1,9 @@
 const sharp = require('sharp');
 const path = require("path");
 
-const Post = require('../models/Post.js')
+const Post = require('../models/post.js')
+const User = require('../models/user.js')
+const Reply = require('../models/reply.js')
 // const PrettyEmbed = require('../modules/PrettyEmbed.js')
 const IP = require('../modules/IP.js')
 // const sanitizeHtml = require('sanitize-html')
@@ -11,41 +13,72 @@ module.exports = {
 
         const { description } = req.body
 
-        if (req.file) {
-            image = req.file.filename
-            imageMimeType = req.file.mimetype
+        // if (req.file) {
+        //     image = req.file.filename
+        //     imageMimeType = req.file.mimetype
 
-            let folder = await path.resolve(__dirname, "..")
+        //     let folder = await path.resolve(__dirname, "..")
 
-            sharp(req.file.path).resize(350).toFile(folder + '/images/posts/thumbnail_' + image, (err, resizeImage) => {
-                if (err) {
-                    return res.status(400).send({ error: "Error converting image"})
-                }
-            })
-        } else {
-            image = undefined
-            imageMimeType = undefined
+        //     sharp(req.file.path).resize(350).toFile(folder + '/images/posts/thumbnail_' + image, (err, resizeImage) => {
+        //         if (err) {
+        //             return res.status(400).send({ error: "Error converting image"})
+        //         }
+        //     })
+        // } else {
+        //     image = undefined
+        //     imageMimeType = undefined
+        // }
+
+        // Post.findById(req.params.id).populate(['user', 'replies.user']).then( post => {
+        //     post.replies.push({
+        //         description,
+        //         image,
+        //         imageMimeType,
+        //         ip: IP(req),
+        //         user: req.userId
+        //     })
+
+        //     post.save().then( post => {
+        //         Post.findById(req.params.post).populate(['user', 'replies.user']).then( post => {
+        //             res.json(post)
+        //         })
+        //     }).catch(err => {
+        //         return res.status(400).send({ error: "Error creating reply, try again"})
+        //     })
+        // }).catch( err => {
+        //     console.log(err)
+        //     return res.status(400).send({ error: "Post not found, try again" })
+        // })
+        
+        const post = await Post.findOne({
+            where: { id: req.params.id },
+            include: [
+                { all: true, nested: true }
+            ]
+        })
+        
+        if (!post) {
+            return res.status(400).json({ error: 'Post not found' })
         }
 
-        Post.findById(req.params.post).populate(['user', 'replies.user']).then( post => {
-            post.replies.push({
-                description,
-                image,
-                imageMimeType,
-                ip: IP(req),
-                user: req.userId
+        Reply.create({
+            description: description,
+            userId: req.userId,
+            postId: post.id
+        }).then( async reply => {
+            const post = await Post.findOne({
+                where: { id: reply.postId },
+                include: [
+                    { all: true, nested: true }
+                ]
             })
 
-            post.save().then( post => {
-                Post.findById(req.params.post).populate(['user', 'replies.user']).then( post => {
-                    res.json(post)
-                })
-            }).catch(err => {
-                return res.status(400).send({ error: "Error creating reply, try again"})
-            })
+            // post.userId = undefined
+            
+            return res.json(post)
         }).catch( err => {
             console.log(err)
-            return res.status(400).send({ error: "Post not found, try again" })
+            return res.status(400).send({ error: "Error creating post, try again" })
         })
 
     }

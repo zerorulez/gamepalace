@@ -1,7 +1,9 @@
 const sharp = require('sharp');
 const path = require("path");
 
-const Post = require('../models/Post.js')
+const Post = require('../models/post.js')
+const User = require('../models/user.js')
+const Reply = require('../models/reply.js')
 const IP = require('../modules/IP.js')
 // const PrettyEmbed = require('../modules/PrettyEmbed.js')
 // const sanitizeHtml = require('sanitize-html')
@@ -9,14 +11,33 @@ const IP = require('../modules/IP.js')
 module.exports = {
     async index(req, res) {
 
-        const posts = await Post.find().sort({'updatedAt': -1}).populate(['user', 'replies.user'])
+        const posts = await Post.findAll({
+            include: [
+                { all: true, nested: true }
+            ],
+            order: [
+                ['updatedAt', 'DESC'],
+                ['id', 'DESC']
+            ]
+        })
 
         return res.json(posts)
 
     },
     async get(req, res) {
 
-        const post = await Post.findById(req.params.id).populate(['user', 'replies.user'])
+        const post = await Post.findOne({
+            where: { id: req.params.id },
+            include: [
+                { all: true, nested: true }
+            ]
+        })
+
+        if (!post) {
+            return res.status(400).json({ error: 'Post not found' })
+        }
+
+        // post.userId = undefined
 
         return res.json(post)
 
@@ -25,20 +46,23 @@ module.exports = {
 
         const { title, description } = req.body
 
-        if (req.file) {
-            image = req.file.filename
-        }
-
         Post.create({
-            title,
-            description,
-            image,
-            imageMimeType,
-            ip: IP(req),
-            user: req.userId
-        }).then( post => {
-            return res.json(post)
+            title: title,
+            description: description,
+            userId: req.userId
+        }).then( async post => {
+            const newPost = await Post.findOne({
+                where: { id: post.id },
+                include: [
+                    { all: true, nested: true }
+                ]
+        })
+
+            // newPost.userId = undefined
+            
+            return res.json(newPost)
         }).catch( err => {
+            console.log(err)
             return res.status(400).send({ error: "Error creating post, try again" })
         })
 

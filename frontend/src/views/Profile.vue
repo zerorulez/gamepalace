@@ -26,7 +26,7 @@
               </div> -->
               <div class="form-group text-left">
                 <label for="user">Usuário</label>
-                <input type="text" v-model="user.username" class="form-control" name="user" id="user">
+                <input type="text" v-model="user.username" class="form-control" name="user" id="user" disabled>
               </div>
               <div class="form-group text-left">
                 <label for="email">Email</label>
