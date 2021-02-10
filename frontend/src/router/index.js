@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Board from '../views/Board.vue'
-import NewPost from '../views/NewPost.vue'
-import Post from '../views/Post.vue'
-import NewReply from '../views/NewReply.vue'
+import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
+import Profile from '../views/Profile.vue'
+import UserProfile from '../views/UserProfile.vue'
+import NewThread from '../views/NewThread.vue'
+import Thread from '../views/Thread.vue'
 
 Vue.use(VueRouter)
 
@@ -15,30 +17,35 @@ Vue.use(VueRouter)
     component: Home
   },
   {
-    path: '/:categorie',
-    name: 'Board',
-    component: Board
+    path: '/login',
+    name: 'Login',
+    component: Login
   },
   {
-    path: '/:categorie/post/new',
-    name: 'NewPost',
-    component: NewPost
+    path: '/registrar',
+    name: 'Register',
+    component: Register
   },
   {
-    path: '/post/:id',
-    name: 'Post',
-    component: Post
+    path: '/perfil',
+    name: 'Profile',
+    component: Profile
   },
   {
-    path: '/post/:id/reply',
-    name: 'NewReply',
-    component: NewReply
+    path: '/perfil/:id',
+    name: 'UserProfile',
+    component: UserProfile
   },
   {
-    path: '/post/:id/reply/:reply_id',
-    name: 'NewReply',
-    component: NewReply
-  }
+    path: '/novo-topico',
+    name: 'NewThread',
+    component: NewThread
+  },
+  {
+    path: '/topico/:id',
+    name: 'Thread',
+    component: Thread
+  },
 ]
 
 const router = new VueRouter({

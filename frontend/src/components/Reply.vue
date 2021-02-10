@@ -1,98 +1,121 @@
 <template>
-  <div class="reply border-gray rounded mb-2 p-2" :class="{'flex-column' : photoRow }" :id="reply._id">
-    <div class="media">
-      <img :src="url + reply.filename" :alt="reply.title" class="img-fluid" v-if="reply.filename" @click="tooglePhoto()" :class="{ 'max-image' : !photoRow }">
-      <div class="embed-responsive embed-responsive-16by9" v-if="reply.embed">
-        <iframe class="embed-responsive-item" :src="reply.embed" allowfullscreen></iframe>
+  <div class="reply">
+    <div class="reply-wrapper">
+      <!-- <div class="reply-image" @click="openImage()" v-if="reply.image" :style="{ 'background-image' : 'url(' + imagePath + reply.image + ')'}"></div> -->
+      <div class="reply-content">
+        <div class="reply-header">
+          <p v-if="reply.description" v-html="reply.description"></p>
+          <img @click="openImage()" v-if="reply.image" :src="imagePath + reply.image" :alt="reply.description" class="img-fluid mt-4 reply-image-max">
+        </div>
+        <div class="reply-footer pt-2">
+          <span class="date" v-if="reply.createdAt">{{ reply.createdAt | moment("H:mm - D MMMM") }}</span>
+          <div @click="goToProfile(reply.user._id)" class="user">
+            <span class="username" v-if="reply.user">{{ reply.user.username }}</span>
+            <div class="avatar-image" v-if="reply.user && reply.user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + reply.user.avatar + ')'}"></div>
+            <div class="avatar-image default-avatar" v-if="reply.user && !reply.user.avatar"></div>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="info" :class="{'pl-xl-3' : (!photoRow && (reply.embed || reply.filename) ), 'pt-xl-0': !photoRow, 'pt-3': (reply.embed || reply.filename) }">
-      <div class="reply-header mb-2">
-        <router-link class="d-block reply-to-this" :to="$route.params.id + '/reply/' + reply._id">Reply</router-link>
-        <p class="date font-secondary pl-3">{{ reply.createdAt | moment("DD/MM/YYYY HH:mm:ss") }}</p>
-      </div>
-      <span v-if="reply.reply_id" class="reply-to-this d-block" @click="scrollMeTo(reply.reply_id)">>>{{ reply.reply_id }}</span>
-      <p class="description font-primary" v-html="reply.description" v-linkified></p>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Reply',
-  props: {
-    reply: Object
-  },
-  data() {
-    return {
-      url: process.env.VUE_APP_UPLOAD_URL,
-      photoRow: false,
-    }
-  },
-  methods: {
-    tooglePhoto() {
-      this.photoRow = !this.photoRow;
-    },
-    scrollMeTo(refName) {
-      var element = document.getElementById(refName)
-      element.style.backgroundColor = '#3b3f44'
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  }
-}
-</script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import '../styles/variables.scss';
-  .reply {
-    display: flex;
-    word-break: break-word;
-    flex-direction: column;
 
-    @media (min-width: 1200px) {
-      flex-direction: row;
+@import '../styles/variables.scss';
+
+.reply {
+  .reply-wrapper {
+      background-color: $light-gray;
+      border-radius: 10px;
+      margin-bottom: 15px;
+
+    .reply-image {
+      border-radius: 10px 10px 0 0;
+      background-color: #000;
+      height: 125px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      cursor: pointer;
+      
+      @media (min-width: 992px) {
+        height: 250px;
+      }
+
     }
-
-    .media {
-      display: flex;
-      justify-content: center;
-
-      .max-image {
-        max-height: 200px;
-      }
-
-      img {
-        cursor: pointer;
-      }
-      div {
-        min-width: 300px;
-      }
-    }
-
-    .info {
+    .reply-content {
+      padding: 15px;
       width: 100%;
-      .reply-header {
-        display: flex;
-        justify-content: space-between;
 
-        .date {
-          font-size: 14px;
-          min-width: 150px;
-          text-align: right;
+      .reply-header {
+        white-space: pre-wrap;
+        .reply-image-max {
+          max-width: 300px;
+          max-height: 300px;
         }
       }
 
-      .description {
-        white-space: pre-line;
-      }
+      .reply-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        font-size: 12px;
 
-      .reply-to-this {
-        font-size: 14px;
-        cursor: pointer;
-        text-decoration: underline;
-        color: $link;
+        .date {
+          text-transform: capitalize;
+        }
+
+        .user {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          .username {
+            font-weight: bold;
+            padding-right: 15px;
+            font-size: 15px;
+          }
+          .default-avatar {
+            background-image: url("../assets/avatar.png");
+          }
+          .avatar-image {
+            width: 40px;
+            height: 40px;
+            border: 1px solid $lighter-gray;
+            border-radius: 7px;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+          }
+        }
       }
     }
   }
+}
 </style>
+
+<script>
+
+export default {
+  name: 'Reply',
+  props: ['reply'],
+  data() {
+    return {
+      imagePath: process.env.VUE_APP_API + '/images/posts/',
+      avatarPath: process.env.VUE_APP_API + '/images/avatars/thumbnail_'
+    }
+  },
+  methods: {
+    openImage() {
+      this.$store.commit('setLightbox', { image: this.reply.image, type: 'image' })
+      this.$store.commit('toogleLightbox')
+    },
+    goToProfile(id) {
+      this.$router.push('/perfil/' + id)
+    }
+  },
+  components: {
+  }
+}
+</script>

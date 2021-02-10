@@ -1,51 +1,22 @@
-const { Schema, model } = require('mongoose')
+const { Model, DataTypes } = require('sequelize');
 
-const PostSchema = new Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    categorie: {
-        type: String,
-        required: true
-    },
-    filename: {
-        type: String
-    },
-    embed: {
-        type: String
-    },
-    ip: {
-        type: String
-    },
-    replys: [
-        {
-            reply_id: {
-                type: Schema.Types.ObjectId
-            },
-            description: {
-                type: String,
-            },
-            filename: {
-                type: String
-            },
-            embed: {
-                type: String
-            },
-            ip: {
-                type: String
-            },
-            createdAt: {
-                type: Date
-            },
-        }
-    ]
-},{
-    timestamps: true
-})
+class post extends Model {
+    static init(connection) {
+        super.init({
+          title: DataTypes.STRING,
+          description: DataTypes.STRING
+        }, {
+          sequelize: connection,
+          defaultScope: {
+            attributes: { exclude: [ 'userId' ] }
+          }
+        })
+    }
 
-module.exports = model('Post', PostSchema)
+    static associate(models) {
+      this.belongsTo(models.user, { foreignKey: 'userId', as: 'user' });
+      this.hasMany(models.reply, { foreignKey: 'postId', as: 'replies' });
+    }
+}
+
+module.exports = post;

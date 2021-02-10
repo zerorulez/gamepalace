@@ -1,21 +1,18 @@
 const express = require('express')
-const mongoose = require('mongoose')
 const cors = require('cors')
-
-const routes = require('./routes.js')
+const path = require('path')
 
 require('dotenv/config');
 
+require('./database.js')
+
+const routes = require('./routes.js')
+
 const app = express()
 const server = require('http').Server(app)
+var dir = path.join(__dirname, 'images');
+app.use('/images', express.static(dir))
 
-mongoose.connect(process.env.DB_LINK, {
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-    useCreateIndex: true
-})
-
-app.use(express.static('tmp'))
 app.set('trust proxy', true)
 app.use(cors())
 app.use(express.json())
