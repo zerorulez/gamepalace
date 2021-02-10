@@ -24,6 +24,7 @@
 
 <style scoped lang="scss">
 .home {
+  margin-bottom: auto;
   .forum-header {
     display: flex;
     justify-content: space-between;

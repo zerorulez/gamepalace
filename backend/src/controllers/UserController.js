@@ -1,23 +1,20 @@
-const sharp = require('sharp');
+// const sharp = require('sharp');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
-const User = require('../models/user.js')
+const User = require('../models/User.js')
 
 module.exports = {
     async index(req, res) {
 
         const user = await User.findOne({
-            where: { id: req.userId }
+            where: { id: req.userId },
+            attributes: { include: ['email'] }
         })
         
         if (!user) {
             return res.status(400).json({ error: 'User not found' })
         }
-        
-        user.password = undefined
-        user.passwordResetToken = undefined
-        user.passwordResetExpires = undefined
 
         res.send(user)
 
@@ -34,11 +31,6 @@ module.exports = {
             return res.status(400).json({ error: 'User not found' })
         }
 
-        user.email = undefined
-        user.password = undefined
-        user.passwordResetToken = undefined
-        user.passwordResetExpires = undefined
-
         res.send(user)
 
     },
@@ -47,7 +39,8 @@ module.exports = {
         const { about } = req.body
 
         const user = await User.findOne({
-            where: { id: req.userId }
+            where: { id: req.userId },
+            attributes: { include: ['email'] },
         })
 
         if (!user) {
@@ -55,11 +48,6 @@ module.exports = {
         }
 
         await user.update({ about: about })
-
-        user.email = undefined
-        user.password = undefined
-        user.passwordResetToken = undefined
-        user.passwordResetExpires = undefined
 
         res.send(user)
 

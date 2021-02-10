@@ -14,9 +14,10 @@
           <div class="form">
             <div class="avatar-wrapper">
               <div class="cover"></div>
-              <div class="avatar" @click="openImage()" v-if="user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + user.avatar + ')'}"></div>
+              <!-- <div class="avatar cursor-pointer" @click="openImage()" v-if="user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + user.avatar + ')'}"></div> -->
               <div class="avatar default-avatar" v-if="!user.avatar"></div>
               <h1 class="text-center">{{ user.username }}</h1>
+              <p class="pb-2">{{ user.about }}</p>
               <p v-if="user.createdAt">Registro: {{ user.createdAt | moment("DD/MM/YYYY") }}</p>
               <button @click="$router.go(-1)" class="btn btn-default">Voltar</button>
             </div>
@@ -46,6 +47,10 @@
       background-image: url("../assets/avatar.png");
     }
 
+    .cursor-pointer {
+      cursor: pointer;
+    }
+
     .avatar {
       width: 220px;
       height: 220px;
@@ -54,7 +59,6 @@
       background-color: #000000;
       background-position: center;
       background-size: cover;
-      cursor: pointer;
     }
 
     h1 {

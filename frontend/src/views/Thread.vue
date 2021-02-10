@@ -11,10 +11,10 @@
                   <!-- <span class="game text-blue">Streets of Rage</span> -->
                   <h1>{{ thread.title }}</h1>
                 </div>
-                <div @click="goToProfile(thread.user._id)" class="user">
-                  <span class="username" v-if="thread.user">{{ thread.user.username }}</span>
-                  <div class="avatar-image" v-if="thread.user && thread.user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + thread.user.avatar + ')'}"></div>
-                  <div class="avatar-image default-avatar" v-if="thread.user && !thread.user.avatar"></div>
+                <div @click="goToProfile(thread.User.username)" class="user">
+                  <span class="username" v-if="thread.User">{{ thread.User.username }}</span>
+                  <!-- <div class="avatar-image" v-if="thread.User" :style="{ 'background-image' : 'url(' + avatarPath + thread.User.avatar + ')'}"></div> -->
+                  <div class="avatar-image default-avatar" v-if="thread.User"></div>
                 </div>
               </div>
               <div class="thread-description">
@@ -38,13 +38,13 @@
 
             <div v-if="$store.state.token && replyFormStatus" class="reply-form">
               <form @submit.prevent="newReply()" action="">
-                <div class="form-group text-left">
+                <!-- <div class="form-group text-left">
                   <label for="avatar">Imagem</label>
                   <div class="custom-file">
                     <input type="file" class="custom-file-input" id="customFile" ref="file" v-on:change="handleFileUpload()" accept="image/gif, image/jpeg, image/png">
                     <label class="custom-file-label" for="customFile">{{ fileName }}</label>
                   </div>
-                </div>
+                </div> -->
                 <div class="form-group text-left">
                   <label for="description">Mensagem</label>
                   <editor
@@ -82,9 +82,9 @@
               </div>
             </div>
 
-            <Reply v-for="(reply, index) in thread.replies" :key="index" :reply="reply" />
+            <Reply v-for="(reply, index) in thread.Replies" :key="index" :reply="reply" />
 
-            <div v-if="thread.replies && thread.replies.length == 0">
+            <div v-if="thread.Replies && thread.Replies.length == 0">
               <p>Nenhuma resposta encontrada...</p>
             </div>
 
@@ -293,25 +293,25 @@ export default {
       
       if (!this.errors.length) {
         
-        let formData = new FormData()
+        // let formData = new FormData()
 
-        if (this.file !== '') {
-          formData.append('file', this.file)
-        }
+        // if (this.file !== '') {
+        //   formData.append('file', this.file)
+        // }
 
-        if (this.reply.description) {
-          formData.append('description', this.reply.description)
-        }
+        // if (this.reply.description) {
+        //   formData.append('description', this.reply.description)
+        // }
         
         let headers = {
           Authorization: 'Bearer ' + this.$store.state.token
         }
 
-        axios.post(process.env.VUE_APP_API + '/reply/' + this.thread._id, formData, { headers }).then( res => {
+        axios.post(process.env.VUE_APP_API + '/reply/' + this.thread.id, { description: this.reply.description }, { headers }).then( res => {
           this.thread = res.data
-          this.reply = {}
+          this.reply.description = ''
           this.file = ''
-          this.fileName = 'Escolher arquivo...'
+          // this.fileName = 'Escolher arquivo...'
           
           setTimeout(() => {
             window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
@@ -324,16 +324,16 @@ export default {
       }
     },
     validate() {
-      if (!this.reply.description && this.file == '') {
-        this.errors.push('Uma mensagem ou imagem são obrigatórios.');
+      if (!this.reply.description) {
+        this.errors.push('Uma mensagem é obrigatória.');
       }
     },
-    openImage() {
-      this.$store.commit('setLightbox', { image: this.thread.image, type: 'image' })
-      this.$store.commit('toogleLightbox')
-    },
-    goToProfile(id) {
-      this.$router.push('/perfil/' + id)
+    // openImage() {
+    //   this.$store.commit('setLightbox', { image: this.thread.image, type: 'image' })
+    //   this.$store.commit('toogleLightbox')
+    // },
+    goToProfile(username) {
+      this.$router.push('/perfil/' + username)
     },
     toggleFormStatus() {
       this.replyFormStatus = !this.replyFormStatus

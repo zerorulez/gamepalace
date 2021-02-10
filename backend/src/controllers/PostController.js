@@ -1,9 +1,9 @@
-const sharp = require('sharp');
+// const sharp = require('sharp');
 const path = require("path");
 
-const Post = require('../models/post.js')
-const User = require('../models/user.js')
-const Reply = require('../models/reply.js')
+const Post = require('../models/Post.js')
+const User = require('../models/User.js')
+const Reply = require('../models/Reply.js')
 const IP = require('../modules/IP.js')
 // const PrettyEmbed = require('../modules/PrettyEmbed.js')
 // const sanitizeHtml = require('sanitize-html')
@@ -13,7 +13,7 @@ module.exports = {
 
         const posts = await Post.findAll({
             include: [
-                { all: true, nested: true }
+                { all: true, nested: true, order: ['reply', 'DESC'] },
             ],
             order: [
                 ['updatedAt', 'DESC'],

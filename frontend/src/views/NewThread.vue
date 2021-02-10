@@ -14,13 +14,13 @@
                   </div>
                   <!-- <div class="avatar-image" :style="{ 'background-image' : 'url(' + 'http://picsum.photos/70' + ')'}"></div> -->
                 </div>
-                <div class="form-group text-left">
+                <!-- <div class="form-group text-left">
                   <label for="avatar">Imagem</label>
                   <div class="custom-file">
                     <input type="file" class="custom-file-input" id="customFile" ref="file" v-on:change="handleFileUpload()" accept="image/gif, image/jpeg, image/png">
                     <label class="custom-file-label" for="customFile">{{ fileName }}</label>
                   </div>
-                </div>
+                </div> -->
                 <div class="form-group text-left">
                   <label for="description">Mensagem</label>
                   <editor
@@ -149,16 +149,16 @@ export default {
     return {
       thread: {},
       file: '',
-      fileName: 'Escolher arquivo...',
+      // fileName: 'Escolher arquivo...',
       errors: [],
       TinyMCEKey: process.env.VUE_APP_TINYMCE_KEY
     }
   },
   methods: {
-    handleFileUpload() {
-      this.file = this.$refs.file.files[0];
-      this.fileName = this.$refs.file.files[0].name
-    },
+    // handleFileUpload() {
+    //   this.file = this.$refs.file.files[0];
+    //   this.fileName = this.$refs.file.files[0].name
+    // },
     newThread() {
       
       this.errors = []
@@ -166,18 +166,18 @@ export default {
       this.validate()
       
       if (!this.errors.length) {
-        let formData = new FormData()
+        // let formData = new FormData()
 
-        formData.append('title', this.thread.title)
-        formData.append('file', this.file)
-        formData.append('description', this.thread.description)
+        // formData.append('title', this.thread.title)
+        // formData.append('file', this.file)
+        // formData.append('description', this.thread.description)
         
         let headers = {
           Authorization: 'Bearer ' + this.$store.state.token
         }
 
-        axios.post(process.env.VUE_APP_API + '/post', formData, { headers }).then( res => {
-          this.$router.push('/topico/' + res.data._id)
+        axios.post(process.env.VUE_APP_API + '/post', { title: this.thread.title, description: this.thread.description}, { headers }).then( res => {
+          this.$router.push('/topico/' + res.data.id)
         }).catch( (err) => {
           this.errors.push(err.response.data.error)
         })
@@ -187,9 +187,9 @@ export default {
       if (!this.thread.title) {
         this.errors.push('O título é obrigatório.');
       }
-      if (this.file == '') {
-        this.errors.push('A imagem é obrigatória.');
-      }
+      // if (this.file == '') {
+      //   this.errors.push('A imagem é obrigatória.');
+      // }
       if (!this.thread.description) {
         this.errors.push('Uma mensagem é obrigatória.');
       }

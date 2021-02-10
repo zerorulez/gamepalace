@@ -9,16 +9,16 @@
           <div class="header-wrapper">
             <!-- <span class="game text-blue">Streets of Rage</span> -->
             <h2>{{ thread.title }}</h2>
-            <p>{{  thread.description }}</p>
+            <p v-html="thread.description"></p>
           </div>
           <div class="user">
-            <span class="username" v-if="thread.user">{{ thread.user.username }}</span>
-            <!-- <div class="avatar-image" v-if="thread.user && thread.user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + thread.user.avatar + ')'}"></div> -->
-            <div class="avatar-image default-avatar" v-if="thread.user && !thread.user.avatar"></div>
+            <span class="username" v-if="thread.User">{{ thread.User.username }}</span>
+            <!-- <div class="avatar-image" v-if="thread.User && thread.User.avatar" :style="{ 'background-image' : 'url(' + avatarPath + thread.User.avatar + ')'}"></div> -->
+            <div class="avatar-image default-avatar"></div>
           </div>
         </div>
         <div class="thread-footer">
-          <!-- <span class="replies">{{ thread.replies.length }} respostas</span> -->
+          <span class="replies">{{ thread.Replies.length }} respostas</span>
           <span class="date" v-if="thread.createdAt">{{ thread.createdAt | moment("H:mm - D MMMM") }}</span>
         </div>
       </div>

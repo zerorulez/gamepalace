@@ -9,10 +9,10 @@
         </div>
         <div class="reply-footer pt-2">
           <span class="date" v-if="reply.createdAt">{{ reply.createdAt | moment("H:mm - D MMMM") }}</span>
-          <div @click="goToProfile(reply.user._id)" class="user">
-            <span class="username" v-if="reply.user">{{ reply.user.username }}</span>
-            <div class="avatar-image" v-if="reply.user && reply.user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + reply.user.avatar + ')'}"></div>
-            <div class="avatar-image default-avatar" v-if="reply.user && !reply.user.avatar"></div>
+          <div @click="goToProfile(reply.User.username)" class="user">
+            <span class="username" v-if="reply.User">{{ reply.User.username }}</span>
+            <!-- <div class="avatar-image" v-if="reply.user && reply.User.avatar" :style="{ 'background-image' : 'url(' + avatarPath + reply.User.avatar + ')'}"></div> -->
+            <div class="avatar-image default-avatar"></div>
           </div>
         </div>
       </div>
@@ -107,12 +107,12 @@ export default {
     }
   },
   methods: {
-    openImage() {
-      this.$store.commit('setLightbox', { image: this.reply.image, type: 'image' })
-      this.$store.commit('toogleLightbox')
-    },
-    goToProfile(id) {
-      this.$router.push('/perfil/' + id)
+    // openImage() {
+    //   this.$store.commit('setLightbox', { image: this.reply.image, type: 'image' })
+    //   this.$store.commit('toogleLightbox')
+    // },
+    goToProfile(username) {
+      this.$router.push('/perfil/' + username)
     }
   },
   components: {

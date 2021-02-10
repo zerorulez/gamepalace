@@ -5,7 +5,7 @@ const mailer = require('../modules/mailer')
 
 require('dotenv/config');
 
-const User = require('../models/user.js')
+const User = require('../models/User.js')
 
 function generateToken(params) {
     return jwt.sign(params , process.env.JWT_SECRET, {
@@ -62,11 +62,8 @@ module.exports = {
         if (!await bcrypt.compare(password, user.password)) {
             return res.status(400).send({ error: 'Invalid password'})
         }
-
-        user.email = undefined
+        
         user.password = undefined
-        user.passwordResetToken = undefined
-        user.passwordResetExpires = undefined
 
         res.send({ 
             user, 
@@ -98,8 +95,8 @@ module.exports = {
 
         mailer.sendMail({
             to: email,
-            from: 'luc4s.rib3iro@gmail.com',
-            subject: 'Message',
+            from: 'nao-responda@gamepalace.com.br',
+            subject: 'Esqueci a senha',
             text: token
         }).then( mail => {
             return res.send()

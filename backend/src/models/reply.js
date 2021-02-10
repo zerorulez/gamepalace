@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 
-class reply extends Model {
+class Reply extends Model {
     static init(connection) {
         super.init({
           description: DataTypes.STRING
@@ -13,9 +13,9 @@ class reply extends Model {
     }
 
     static associate(models) {
-      this.belongsTo(models.user, { foreignKey: 'userId', as: 'user' });
-      this.belongsTo(models.post, { foreignKey: 'postId', as: 'post' });
+      this.belongsTo(models.User, { foreignKey: 'userId', as: 'User' });
+      this.belongsTo(models.Post, { foreignKey: 'postId', as: 'Post' });
     }
 }
 
-module.exports = reply;
+module.exports = Reply;
