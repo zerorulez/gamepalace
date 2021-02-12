@@ -25,58 +25,6 @@
   color: $lighter-gray;
   overflow-wrap: anywhere;
 
-  // SKIN TINYMCE
-  .tox .tox-edit-area__iframe {
-    background-color: inherit;
-  }
-
-  .tox .tox-toolbar__primary {
-    background: $dark-gray;
-    border-bottom: 1px solid $lighter-gray;
-  }
-
-  .tox .tox-statusbar {
-    background-color: $light-gray;
-    border-top: 1px solid $lighter-gray;
-  }
-
-  .tox-tinymce {
-    border: 1px solid $lighter-gray;
-    border-radius: 4px;
-  }
-
-  .tox:not([dir=rtl]) .tox-toolbar__group:not(:last-of-type) {
-    border-right: 1px solid $lighter-gray;
-  }
-
-  .tox .tox-tbtn svg {
-    fill: $lighter-gray;
-  }
-
-  .tox .tox-split-button:hover {
-    box-shadow: 0 0 0 1px $lighter-gray inset;
-  }
-
-  .tox .tox-tbtn:hover {
-    background: $lighter-gray;
-    svg {
-      fill: $dark-gray;
-    }
-  }
-
-  .tox .tox-statusbar__wordcount, .tox .tox-statusbar__path-item {
-    color: $lighter-gray;
-  }
-
-  .tox .tox-tbtn--enabled {
-    background: $lighter-gray;
-    svg {
-      fill: $dark-gray;
-    }
-  }
-
-  // FIM SKIN TINYMCE
-
   // BORDA EMBED THREAD
   .thread-description {
     iframe {
@@ -85,7 +33,7 @@
   }
   // FIM BORDA EMBED THREAD
 
-  input {
+  input.form-control {
     background-color: $dark-gray;
     border: 1px solid $lighter-gray;
   }

@@ -3,7 +3,7 @@ const { Model, DataTypes } = require('sequelize');
 class Reply extends Model {
     static init(connection) {
         super.init({
-          description: DataTypes.STRING
+          description: DataTypes.TEXT
         }, {
           sequelize: connection,
           defaultScope: {

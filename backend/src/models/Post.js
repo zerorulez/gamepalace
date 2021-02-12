@@ -4,7 +4,7 @@ class Post extends Model {
     static init(connection) {
         super.init({
           title: DataTypes.STRING,
-          description: DataTypes.STRING
+          description: DataTypes.TEXT
         }, {
           sequelize: connection,
           defaultScope: {

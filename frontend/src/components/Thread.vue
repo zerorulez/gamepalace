@@ -9,7 +9,6 @@
           <div class="header-wrapper">
             <!-- <span class="game text-blue">Streets of Rage</span> -->
             <h2>{{ thread.title }}</h2>
-            <p v-html="thread.description"></p>
           </div>
           <div class="user">
             <span class="username" v-if="thread.User">{{ thread.User.username }}</span>
@@ -19,7 +18,7 @@
         </div>
         <div class="thread-footer">
           <span class="replies">{{ thread.Replies.length }} respostas</span>
-          <span class="date" v-if="thread.createdAt">{{ thread.createdAt | moment("H:mm - D MMMM") }}</span>
+          <span class="date" v-if="thread.createdAt">{{ thread.createdAt | moment("H:mm - D MMMM YYYY") }}</span>
         </div>
       </div>
     </div>
@@ -138,7 +137,7 @@ export default {
       }
 
       .thread-footer {
-        padding-top: 30px;
+        padding-top: 15px;
         display: flex;
         justify-content: space-between;
         font-size: 12px;

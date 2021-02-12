@@ -23,25 +23,7 @@
                 </div> -->
                 <div class="form-group text-left">
                   <label for="description">Mensagem</label>
-                  <editor
-                    :api-key="TinyMCEKey"
-                    v-model="thread.description"
-                    :init="{
-                      height: 500,
-                      menubar: false,
-                      language: 'pt_BR',
-                      content_style: 'body {color: #707070; font-family: \'Montserrat\', sans-serif; }',
-                      plugins: [
-                        'advlist autolink lists link image charmap print preview anchor',
-                        'searchreplace visualblocks code fullscreen',
-                        'insertdatetime media table paste code help wordcount media'
-                      ],
-                      toolbar:
-                        'undo redo | bold italic backcolor | \
-                        alignleft aligncenter alignright alignjustify | \
-                        media | bullist numlist outdent indent | removeformat | help'
-                    }"
-                  />
+                  <div id="editorjs"></div>
                   <!-- <textarea name="description" class="form-control" id="description" v-model="thread.description" cols="30" rows="10"></textarea> -->
                 </div>
                 <div class="button">
@@ -70,6 +52,12 @@
 @import '../styles/variables.scss';
 
 .new-thread {
+  #editorjs {
+    background-color: #0E0E10;
+    border: 1px solid #707070;
+    padding: .375rem .75rem;
+    border-radius: .25em;
+  }
   .thread-wrapper {
       background-color: $light-gray;
       border-radius: 10px;
@@ -140,8 +128,13 @@
 </style>
 
 <script>
-import Editor from '@tinymce/tinymce-vue'
 import axios from 'axios'
+import EditorJS from '@editorjs/editorjs';
+import Header from '@editorjs/header';
+import List from '@editorjs/list';
+import Embed from '@editorjs/embed';
+import Image from '@editorjs/image';
+import Paragraph from '@editorjs/paragraph';
 
 export default {
   name: 'NewThread',
@@ -151,8 +144,45 @@ export default {
       file: '',
       // fileName: 'Escolher arquivo...',
       errors: [],
-      TinyMCEKey: process.env.VUE_APP_TINYMCE_KEY
+      editor: null
     }
+  },
+  mounted() {
+    this.editor = new EditorJS({
+      tools: {
+        header: {
+          class: Header,
+          inlineToolbar: false
+        },
+        paragraph: {
+          class: Paragraph,
+          inlineToolbar: [
+            'bold',
+            'italic',
+            'link'
+          ]
+        },
+        list: {
+          class: List,
+          inlineToolbar: [
+            'bold'
+          ]
+        },
+        embed: {
+          class: Embed,
+          inlineToolbar: false
+        },
+        image: {
+          class: Image,
+          config: {
+            endpoints: {
+              byFile: `${process.env.VUE_APP_API}/image`, // Your backend file uploader endpoint
+              byUrl: `${process.env.VUE_APP_API}/image-by-url`, // Your endpoint that provides uploading by Url
+            }
+          }
+        },
+      }
+    })
   },
   methods: {
     // handleFileUpload() {
@@ -171,15 +201,25 @@ export default {
         // formData.append('title', this.thread.title)
         // formData.append('file', this.file)
         // formData.append('description', this.thread.description)
-        
-        let headers = {
-          Authorization: 'Bearer ' + this.$store.state.token
-        }
 
-        axios.post(process.env.VUE_APP_API + '/post', { title: this.thread.title, description: this.thread.description}, { headers }).then( res => {
-          this.$router.push('/topico/' + res.data.id)
-        }).catch( (err) => {
-          this.errors.push(err.response.data.error)
+        this.editor.save().then( data => {
+          console.log(data)
+
+          if (data.blocks.length > 0) {
+            let headers = {
+              Authorization: 'Bearer ' + this.$store.state.token
+            }
+
+            axios.post(process.env.VUE_APP_API + '/post', { title: this.thread.title, description: JSON.stringify(data) }, { headers }).then( res => {
+              this.$router.push('/topico/' + res.data.id)
+            }).catch( (err) => {
+              this.errors.push(err.response.data.error)
+            })
+          } else {
+            this.errors.push('Uma mensagem é obrigatória.');
+          }
+        }).catch( err => {
+          console.log(err)
         })
       }
     },
@@ -187,20 +227,12 @@ export default {
       if (!this.thread.title) {
         this.errors.push('O título é obrigatório.');
       }
-      // if (this.file == '') {
-      //   this.errors.push('A imagem é obrigatória.');
-      // }
-      if (!this.thread.description) {
-        this.errors.push('Uma mensagem é obrigatória.');
-      }
-    },
-    beforeDestroy() {
-      // Always destroy your editor instance when it's no longer needed
-      this.editor.destroy()
     },
   },
+  beforeDestroy() {
+    this.editor.destroy()
+  },
   components: {
-     'editor': Editor
   }
 }
 </script>

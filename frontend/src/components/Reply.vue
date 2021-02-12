@@ -7,8 +7,8 @@
           <p v-if="reply.description" v-html="reply.description"></p>
           <img @click="openImage()" v-if="reply.image" :src="imagePath + reply.image" :alt="reply.description" class="img-fluid mt-4 reply-image-max">
         </div>
-        <div class="reply-footer pt-2">
-          <span class="date" v-if="reply.createdAt">{{ reply.createdAt | moment("H:mm - D MMMM") }}</span>
+        <div class="reply-footer">
+          <span class="date" v-if="reply.createdAt">{{ reply.createdAt | moment("H:mm - D MMMM YYYY") }}</span>
           <div @click="goToProfile(reply.User.username)" class="user">
             <span class="username" v-if="reply.User">{{ reply.User.username }}</span>
             <!-- <div class="avatar-image" v-if="reply.user && reply.User.avatar" :style="{ 'background-image' : 'url(' + avatarPath + reply.User.avatar + ')'}"></div> -->
@@ -62,6 +62,7 @@
         justify-content: space-between;
         align-items: flex-end;
         font-size: 12px;
+        padding-top: 15px;
 
         .date {
           text-transform: capitalize;

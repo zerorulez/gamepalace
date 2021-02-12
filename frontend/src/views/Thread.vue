@@ -6,23 +6,22 @@
           <div class="thread-wrapper">
             <div class="thread-image" @click="openImage()" v-if="thread.image" :style="{ 'background-image' : 'url(' + imagePath + thread.image + ')'}"></div>
             <div class="thread-content">
-              <div class="thread-header">
+              <!-- <div class="thread-header">
                 <div class="header-wrapper">
-                  <!-- <span class="game text-blue">Streets of Rage</span> -->
                   <h1>{{ thread.title }}</h1>
                 </div>
+              </div> -->
+              <div class="thread-description">
+                <div v-html="blocksToHTML(thread.description)"></div>
+              </div>
+              <div class="thread-footer">
+                <!-- <span class="replies" v-if="thread.Replies">{{ thread.Replies.length }} respostas</span> -->
+                <span class="date" v-if="thread.createdAt">{{ thread.createdAt | moment("H:mm - D MMMM YYYY") }}</span>
                 <div @click="goToProfile(thread.User.username)" class="user">
                   <span class="username" v-if="thread.User">{{ thread.User.username }}</span>
                   <!-- <div class="avatar-image" v-if="thread.User" :style="{ 'background-image' : 'url(' + avatarPath + thread.User.avatar + ')'}"></div> -->
                   <div class="avatar-image default-avatar" v-if="thread.User"></div>
                 </div>
-              </div>
-              <div class="thread-description">
-                <p v-html="thread.description"></p>
-              </div>
-              <div class="thread-footer pt-4">
-                <span class="replies" v-if="thread.replies">{{ thread.replies.length }} respostas</span>
-                <span class="date" v-if="thread.createdAt">{{ thread.createdAt | moment("H:mm - D MMMM") }}</span>
               </div>
             </div>
           </div>
@@ -30,10 +29,6 @@
           <div class="replies">
             <div class="replies-header">
               <h2>Respostas</h2>
-              <div class="reply-toogle" @click="toggleFormStatus()">
-                <strong class="pr-2">Responder</strong>
-                <img src="../assets/reply-icon.svg" alt="reply icon" class="img-fluid">
-              </div>
             </div>
 
             <div v-if="$store.state.token && replyFormStatus" class="reply-form">
@@ -46,26 +41,8 @@
                   </div>
                 </div> -->
                 <div class="form-group text-left">
-                  <label for="description">Mensagem</label>
-                  <editor
-                    :api-key="TinyMCEKey"
-                    v-model="reply.description"
-                    :init="{
-                      height: 300,
-                      menubar: false,
-                      language: 'pt_BR',
-                      content_style: 'body {color: #707070; font-family: \'Montserrat\', sans-serif; }',
-                      plugins: [
-                        'advlist autolink lists link image charmap print preview anchor',
-                        'searchreplace visualblocks code fullscreen',
-                        'insertdatetime media table paste code help wordcount media'
-                      ],
-                      toolbar:
-                        'undo redo | bold italic backcolor | \
-                        alignleft aligncenter alignright alignjustify | \
-                        media | bullist numlist outdent indent | removeformat | help'
-                    }"
-                  />
+                  <label for="description">Responder</label>
+                  <textarea name="description" class="form-control" id="description" v-model="reply.description" cols="30" rows="5"></textarea>
                 </div>
                 <div class="buttons">
                   <!-- <button class="btn btn-gray">Adicioanr Imagem</button> -->
@@ -100,7 +77,46 @@
 
 @import '../styles/variables.scss';
 
+.ce-inline-toolbar__actions {
+  input {
+    color: white;
+  }
+}
+
 .thread {
+  margin-bottom: auto;
+  
+  .user {
+    display: flex;
+    align-items: center;
+    padding-left: 30px;
+    flex-shrink: 0;
+    cursor: pointer;
+    .username {
+      font-weight: bold;
+      padding-right: 15px;
+      display: none;
+      font-size: 15px;
+
+      @media (min-width: 992px) {
+        display: block;
+      }
+    }
+    .default-avatar {
+      background-image: url("../assets/avatar.png");
+    }
+    
+    .avatar-image {
+      width: 40px;
+      height: 40px;
+      border: 1px solid $lighter-gray;
+      border-radius: 7px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+    }
+  }
+  
   .thread-wrapper {
       background-color: $light-gray;
       border-radius: 10px;
@@ -128,7 +144,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-bottom: 30px;
+        padding-bottom: 15px;
 
         .game {
           font-size: 13px;
@@ -140,38 +156,6 @@
           font-weight: bold;
           margin: 0;
           text-transform: uppercase;
-        }
-
-        .user {
-          display: flex;
-          align-items: center;
-          padding-left: 30px;
-          flex-shrink: 0;
-          cursor: pointer;
-          .username {
-            font-weight: bold;
-            padding-right: 15px;
-            display: none;
-            font-size: 15px;
-
-            @media (min-width: 992px) {
-              display: block;
-            }
-          }
-          
-          .default-avatar {
-            background-image: url("../assets/avatar.png");
-          }
-          
-          .avatar-image {
-            width: 40px;
-            height: 40px;
-            border: 1px solid $lighter-gray;
-            border-radius: 7px;
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: cover;
-          }
         }
       }
 
@@ -186,6 +170,8 @@
         display: flex;
         justify-content: space-between;
         font-size: 12px;
+        padding-top: 15px;
+        align-items: flex-end;
 
         .date {
           text-transform: capitalize;
@@ -204,10 +190,9 @@
         font-weight: bold;
         font-size: 20px;
         margin: 0;
-        color: white;
       }
       .reply-toogle {
-        cursor: pointer;
+        // cursor: pointer;
       }
     }
 
@@ -256,7 +241,7 @@
 <script>
 import Reply from '@/components/Reply.vue'
 import axios from 'axios'
-import Editor from '@tinymce/tinymce-vue'
+// import edjsHTML from 'editorjs-html'
 
 export default {
   name: 'Thread',
@@ -267,10 +252,10 @@ export default {
       file: '',
       fileName: 'Escolher arquivo...',
       errors: [],
-      replyFormStatus: false,
-      TinyMCEKey: process.env.VUE_APP_TINYMCE_KEY,
+      replyFormStatus: true,
       imagePath: process.env.VUE_APP_API + '/images/posts/',
-      avatarPath: process.env.VUE_APP_API + '/images/avatars/thumbnail_'
+      avatarPath: process.env.VUE_APP_API + '/images/avatars/thumbnail_',
+      // edjsParser: edjsHTML(),
     }
   },
   mounted() {
@@ -323,6 +308,43 @@ export default {
 
       }
     },
+    blocksToHTML(data) {
+      if (data) {
+        let json = JSON.parse(data)
+        var convertedHtml = "";
+        json.blocks.map(block => {
+          switch (block.type) {
+            case "header":
+              convertedHtml += `<h${block.data.level}>${block.data.text}</h${block.data.level}>`;
+              break;
+            case "embed":
+              convertedHtml += `<div class="embed-responsive embed-responsive-16by9 my-2"><iframe class="embed-responsive-item" src="${block.data.embed}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>`;
+              break;
+            case "paragraph":
+              convertedHtml += `<p>${block.data.text}</p>`
+              convertedHtml = convertedHtml.replaceAll('<a', '<a target="_blank"')
+              break;
+            case "delimiter":
+              convertedHtml += "<hr />";
+              break;
+            case "image":
+              convertedHtml += `<img class="img-fluid my-2" src="${block.data.file.url}" title="${block.data.caption}" /><br /><em>${block.data.caption}</em>`;
+              break;
+            case "list":
+              convertedHtml += `<ul class="mt-2">`;
+              block.data.items.forEach(function(li) {
+                convertedHtml += `<li>${li}</li>`;
+              });
+              convertedHtml += "</ul>";
+              break;
+            default:
+              console.log("Unknown block type", block.type);
+              break;
+          }
+        });
+        return convertedHtml;
+      }
+    },
     validate() {
       if (!this.reply.description) {
         this.errors.push('Uma mensagem é obrigatória.');
@@ -337,11 +359,22 @@ export default {
     },
     toggleFormStatus() {
       this.replyFormStatus = !this.replyFormStatus
-    }
+    },
+    // setHTML(data) {
+    //   console.log(data)
+    //   if (data) {
+    //     let json = JSON.parse(data)
+    //     let result = this.edjsParser.parse(json)
+    //     let html = ''
+    //     result.map( item => {
+    //       html += item
+    //     })
+    //     return html
+    //   }
+    // }
   },
   components: {
-    Reply,
-     'editor': Editor
+    Reply
   }
 }
 </script>

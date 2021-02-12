@@ -1,7 +1,7 @@
 const express = require('express')
-// const multer = require('multer')
+const multer = require('multer')
 // const avatarConfig = require('./config/avatar')
-// const postsConfig = require('./config/posts')
+const postsConfig = require('./config/posts')
 // const rateLimit = require("express-rate-limit")
 
 const authMiddleware = require('./middlewares/auth')
@@ -10,6 +10,8 @@ const AuthController = require('./controllers/AuthController.js')
 const UserController = require('./controllers/UserController.js')
 const PostController = require('./controllers/PostController.js')
 const ReplyController = require('./controllers/ReplyController')
+const UploadController = require('./controllers/UploadController')
+const FetchController = require('./controllers/FetchController')
 
 const routes = express.Router()
 
@@ -19,7 +21,7 @@ const routes = express.Router()
 // });
 
 // const uploadAvatar = multer(avatarConfig).single('file')
-// const uploadPostImage = multer(postsConfig).single('file')
+const uploadPostImage = multer(postsConfig).single('image')
 
 routes.post('/api/signup', AuthController.signUp)
 routes.post('/api/signin', AuthController.signIn)
@@ -40,5 +42,10 @@ routes.post('/api/reply/:id', authMiddleware, ReplyController.store)
 // routes.post('/posts', apiLimiter, multer(multerConfig).single('file'), PostController.store)
 
 // routes.post('/replys', apiLimiter, multer(multerConfig).single('file'), ReplyController.store)
+
+routes.post('/api/image', uploadPostImage, UploadController.image)
+routes.post('/api/image-by-url', uploadPostImage, UploadController.imageByURL)
+
+// routes.get('/api/fetch', FetchController.fetch)
 
 module.exports = routes
