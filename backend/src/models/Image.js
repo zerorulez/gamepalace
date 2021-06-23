@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 
-class Image extends Model {
+class image extends Model {
   static init(connection) {
     super.init({
       filename: DataTypes.STRING,
@@ -18,4 +18,4 @@ class Image extends Model {
   }
 }
 
-module.exports = Image;
+module.exports = image;
