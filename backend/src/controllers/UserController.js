@@ -2,7 +2,7 @@ const sharp = require('sharp');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
-const User = require('../models/User.js')
+const User = require('../models/user.js')
 
 module.exports = {
     async index(req, res) {

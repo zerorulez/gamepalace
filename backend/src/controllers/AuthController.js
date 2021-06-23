@@ -5,7 +5,7 @@ const mailer = require('../modules/mailer')
 
 require('dotenv/config');
 
-const User = require('../models/User.js')
+const User = require('../models/user.js')
 
 function generateToken(params) {
     return jwt.sign(params , process.env.JWT_SECRET, {
