@@ -2,7 +2,7 @@ const sharp = require('sharp');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
-const User = require('../models/user.js')
+const User = require('../models/User.js')
 
 module.exports = {
     async index(req, res) {
@@ -99,19 +99,19 @@ module.exports = {
         // }, { new: true })
 
     },
-    async delete(req, res) {
+    // async delete(req, res) {
         
-        const user = await User.findOne({
-            where: { id: req.userId }
-        })
+    //     const user = await User.findOne({
+    //         where: { id: req.userId }
+    //     })
         
-        if (!user) {
-            return res.status(400).json({ error: 'User not found' })
-        }
+    //     if (!user) {
+    //         return res.status(400).json({ error: 'User not found' })
+    //     }
 
-        await user.destroy()
+    //     await user.destroy()
 
-        res.send(user)
+    //     res.send(user)
 
-    }
+    // }
 }

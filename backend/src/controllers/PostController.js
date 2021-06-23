@@ -1,9 +1,10 @@
 const sharp = require('sharp');
 const path = require("path");
 
-const Post = require('../models/post.js')
-const User = require('../models/user.js')
-const Reply = require('../models/reply.js')
+const Post = require('../models/Post.js')
+const Image = require('../models/Image.js')
+const User = require('../models/User.js')
+const Reply = require('../models/Reply.js')
 const IP = require('../modules/IP.js')
 // const PrettyEmbed = require('../modules/PrettyEmbed.js')
 // const sanitizeHtml = require('sanitize-html')
@@ -45,27 +46,32 @@ module.exports = {
     async store(req, res) {
 
         const { title, description } = req.body
+        const files = req.files
 
-        Post.create({
+        const post = await Post.create({
             title: title,
             description: description,
             userId: req.userId
-        }).then( async post => {
-            const newPost = await Post.findOne({
-                where: { id: post.id },
-                include: [
-                    { all: true, nested: true }
-                ]
         })
 
-            // newPost.userId = undefined
-            
-            return res.json(newPost)
-        }).catch( err => {
-            console.log(err)
+        if (!post) {
             return res.status(400).send({ error: "Error creating post, try again" })
+        }
+
+        files.map( file => {
+            file.postId = post.id
         })
 
+        const images = await Image.bulkCreate(files)
+
+        const newPost = await Post.findOne({
+            where: { id: post.id },
+            include: [
+                { all: true, nested: true }
+            ]
+        })
+
+        return res.json(newPost)
     },
 
     // async get(req, res) {

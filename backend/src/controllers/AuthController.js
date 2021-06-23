@@ -5,7 +5,7 @@ const mailer = require('../modules/mailer')
 
 require('dotenv/config');
 
-const User = require('../models/user.js')
+const User = require('../models/User.js')
 
 function generateToken(params) {
     return jwt.sign(params , process.env.JWT_SECRET, {
@@ -47,8 +47,12 @@ module.exports = {
     async signIn(req, res) {
         
         const { password } = req.body
-        
+
         const email = req.body.email.toLowerCase()
+        
+        if (!email) {
+            return res.status(400).json({ error: 'Provide an email' })
+        }
 
         const user = await User.findOne({
             where: { email: email },
@@ -98,9 +102,9 @@ module.exports = {
 
         mailer.sendMail({
             to: email,
-            from: 'luc4s.rib3iro@gmail.com',
-            subject: 'Message',
-            text: token
+            from: 'no-reply@gamepalace.com.br',
+            subject: 'Forgot Password',
+            text: 'Token: ' + token
         }).then( mail => {
             return res.send()
         }).catch( err => {
@@ -110,7 +114,9 @@ module.exports = {
     },
     async recoverPassword(req, res) {
         
-        const { email, token, password } = req.body
+        const { token, password } = req.body
+
+        const email = req.body.email.toLowerCase()
 
         const user = await User.findOne({
             where: { email: email },

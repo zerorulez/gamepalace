@@ -13,8 +13,8 @@ class reply extends Model {
     }
 
     static associate(models) {
-      this.belongsTo(models.user, { foreignKey: 'userId', as: 'user' });
-      this.belongsTo(models.post, { foreignKey: 'postId', as: 'post' });
+      this.belongsTo(models.user, { foreignKey: 'id', as: 'user' });
+      this.belongsTo(models.post, { foreignKey: 'id', as: 'post' });
     }
 }
 
