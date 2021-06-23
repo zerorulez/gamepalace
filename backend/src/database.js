@@ -1,10 +1,10 @@
 const { Sequelize } = require('sequelize');
 const config = require('./config/database');
 
-const User = require('./models/user');
-const Post = require('./models/post');
-const Image = require('./models/image');
-const Reply = require('./models/reply');
+const User = require('./models/User');
+const Post = require('./models/Post');
+const Image = require('./models/Image');
+const Reply = require('./models/Reply');
 
 // Connect no banco de dados
 const sequelize = new Sequelize(config);

@@ -1,11 +1,11 @@
 const sharp = require('sharp');
-const path = require("path");
+const path = require('path');
 
-const Post = require('../models/post.js')
-const Image = require('../models/image.js')
-const User = require('../models/user.js')
-const Reply = require('../models/reply.js')
-const IP = require('../modules/IP.js')
+const Post = require('../models/Post')
+const Image = require('../models/Image')
+const User = require('../models/User')
+const Reply = require('../models/Reply')
+const IP = require('../modules/IP')
 // const PrettyEmbed = require('../modules/PrettyEmbed.js')
 // const sanitizeHtml = require('sanitize-html')
 
