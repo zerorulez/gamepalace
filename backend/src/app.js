@@ -9,7 +9,7 @@ require('./database.js')
 const routes = require('./routes.js')
 
 const app = express()
-const server = require('http').Server(app)
+const server = require('https').Server(app)
 var dir = path.join(__dirname, 'images');
 app.use('/images', express.static(dir))
 
