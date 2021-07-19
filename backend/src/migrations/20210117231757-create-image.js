@@ -11,10 +11,13 @@ module.exports = {
       postId: {
 				type: Sequelize.INTEGER,
       },
+      replyId: {
+				type: Sequelize.INTEGER,
+      },
       filename: {
         type: Sequelize.STRING
       },
-      mimetype: {
+      mimeType: {
         type: Sequelize.STRING
       },
       createdAt: {

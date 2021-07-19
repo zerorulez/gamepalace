@@ -17,6 +17,10 @@ module.exports = {
     async signUp(req, res) {
         const { username, password } = req.body
 
+        if (password.length < 6) {
+            return res.status(400).json({ error: 'Password must contain at least 6 characters' })
+        }
+
         const email = req.body.email.toLowerCase()
 
         const hasUsername = await User.findOne({ where: { username: username } })
@@ -47,6 +51,10 @@ module.exports = {
     async signIn(req, res) {
         
         const { password } = req.body
+        
+        if (password.length < 6) {
+            return res.status(400).json({ error: 'Password must contain at least 6 characters' })
+        }
 
         const email = req.body.email.toLowerCase()
         
@@ -115,6 +123,10 @@ module.exports = {
     async recoverPassword(req, res) {
         
         const { token, password } = req.body
+        
+        if (password.length < 6) {
+            return res.status(400).json({ error: 'Password must contain at least 6 characters' })
+        }
 
         const email = req.body.email.toLowerCase()
 

@@ -3,6 +3,7 @@ const path = require('path');
 
 const Post = require('../models/Post')
 const User = require('../models/User')
+const Image = require('../models/Image')
 const Reply = require('../models/Reply')
 // const PrettyEmbed = require('../modules/PrettyEmbed.js')
 const IP = require('../modules/IP')
@@ -12,43 +13,7 @@ module.exports = {
     async store(req, res) {
 
         const { description } = req.body
-
-        // if (req.file) {
-        //     image = req.file.filename
-        //     imageMimeType = req.file.mimetype
-
-        //     let folder = await path.resolve(__dirname, "..")
-
-        //     sharp(req.file.path).resize(350).toFile(folder + '/images/posts/thumbnail_' + image, (err, resizeImage) => {
-        //         if (err) {
-        //             return res.status(400).send({ error: "Error converting image"})
-        //         }
-        //     })
-        // } else {
-        //     image = undefined
-        //     imageMimeType = undefined
-        // }
-
-        // Post.findById(req.params.id).populate(['user', 'replies.user']).then( post => {
-        //     post.replies.push({
-        //         description,
-        //         image,
-        //         imageMimeType,
-        //         ip: IP(req),
-        //         user: req.userId
-        //     })
-
-        //     post.save().then( post => {
-        //         Post.findById(req.params.post).populate(['user', 'replies.user']).then( post => {
-        //             res.json(post)
-        //         })
-        //     }).catch(err => {
-        //         return res.status(400).send({ error: "Error creating reply, try again"})
-        //     })
-        // }).catch( err => {
-        //     console.log(err)
-        //     return res.status(400).send({ error: "Post not found, try again" })
-        // })
+        const files = req.files
         
         const post = await Post.findOne({
             where: { id: req.params.id },
@@ -61,25 +26,42 @@ module.exports = {
             return res.status(400).json({ error: 'Post not found' })
         }
 
-        Reply.create({
+        const reply = await Reply.create({
             description: description,
             userId: req.userId,
             postId: post.id
-        }).then( async reply => {
-            const post = await Post.findOne({
-                where: { id: reply.postId },
-                include: [
-                    { all: true, nested: true }
-                ]
-            })
-
-            // post.userId = undefined
-            
-            return res.json(post)
-        }).catch( err => {
-            console.log(err)
-            return res.status(400).send({ error: "Error creating post, try again" })
         })
+
+        if (!reply) {
+            return res.status(400).send({ error: "Error creating post, try again" })
+        }
+    
+        if (files) {
+            let folder = await path.resolve(__dirname, "..")
+
+            files.map( file => {
+                // coloca o reply id dentro de cada imagem para subir no banco
+                file.replyId = reply.id
+
+                // cria a thumbnail
+                sharp(file.path).resize(300).toFile(folder + '/images/post/thumbnail_' + file.filename, (err, resizeImage) => {
+                    if (err) {
+                        return res.status(400).send({ error: "Error converting image"})
+                    }
+                })
+            })
+        }
+
+        const images = await Image.bulkCreate(files)
+
+        const newReply = await Post.findOne({
+            where: { id: reply.postId },
+            include: [
+                { all: true, nested: true }
+            ]
+        })
+        
+        return res.json(newReply)
 
     }
 

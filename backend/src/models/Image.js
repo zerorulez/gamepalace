@@ -4,17 +4,15 @@ class image extends Model {
   static init(connection) {
     super.init({
       filename: DataTypes.STRING,
-      mimetype: DataTypes.STRING
+      mimeType: DataTypes.STRING
     }, {
-      sequelize: connection,
-      defaultScope: {
-        attributes: { exclude: [ 'postId' ] }
-      }
+      sequelize: connection
     })
   }
 
   static associate(models) {
     this.belongsTo(models.post, { foreignKey: 'id', as: 'post' });
+    // this.belongsTo(models.reply, { foreignKey: 'id', as: 'reply' });
   }
 }
 

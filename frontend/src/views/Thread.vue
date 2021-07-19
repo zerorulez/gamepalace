@@ -4,21 +4,22 @@
       <div class="row">
         <div class="col-12">
           <div class="thread-wrapper">
-            <div class="thread-image" @click="openImage()" v-if="thread.image" :style="{ 'background-image' : 'url(' + imagePath + thread.image + ')'}"></div>
+            <!-- <div class="thread-image" @click="openImage()" v-if="thread.image" :style="{ 'background-image' : 'url(' + imagePath + thread.image + ')'}"></div> -->
             <div class="thread-content">
               <div class="thread-header">
                 <div class="header-wrapper">
                   <!-- <span class="game text-blue">Streets of Rage</span> -->
-                  <h1>{{ thread.title }}</h1>
+                  <h1 class="mb-4">{{ thread.title }}</h1>
                 </div>
-                <div @click="goToProfile(thread.user._id)" class="user">
+                <div @click="goToProfile(thread.user.username)" class="user">
                   <span class="username" v-if="thread.user">{{ thread.user.username }}</span>
-                  <div class="avatar-image" v-if="thread.user && thread.user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + thread.user.avatar + ')'}"></div>
-                  <div class="avatar-image default-avatar" v-if="thread.user && !thread.user.avatar"></div>
+                  <div class="avatar-image" v-if="thread.user && thread.user.filename" :style="{ 'background-image' : 'url(' + avatarPath + thread.user.filename + ')'}"></div>
+                  <div class="avatar-image default-avatar" v-if="thread.user && !thread.user.filename"></div>
                 </div>
               </div>
               <div class="thread-description">
-                <p v-html="thread.description"></p>
+                <img v-for="(image, index) in thread.images" :key="index" :src="imagePath + image.filename" :alt="image.filename" class="img-fluid">
+                <p class="mt-4">{{ thread.description }}</p>
               </div>
               <div class="thread-footer pt-4">
                 <span class="replies" v-if="thread.replies">{{ thread.replies.length }} respostas</span>
@@ -47,25 +48,7 @@
                 </div>
                 <div class="form-group text-left">
                   <label for="description">Mensagem</label>
-                  <editor
-                    :api-key="TinyMCEKey"
-                    v-model="reply.description"
-                    :init="{
-                      height: 300,
-                      menubar: false,
-                      language: 'pt_BR',
-                      content_style: 'body {color: #707070; font-family: \'Montserrat\', sans-serif; }',
-                      plugins: [
-                        'advlist autolink lists link image charmap print preview anchor',
-                        'searchreplace visualblocks code fullscreen',
-                        'insertdatetime media table paste code help wordcount media'
-                      ],
-                      toolbar:
-                        'undo redo | bold italic backcolor | \
-                        alignleft aligncenter alignright alignjustify | \
-                        media | bullist numlist outdent indent | removeformat | help'
-                    }"
-                  />
+                  <textarea name="description" class="form-control" id="description" v-model="reply.description" cols="30" rows="10"></textarea>
                 </div>
                 <div class="buttons">
                   <!-- <button class="btn btn-gray">Adicioanr Imagem</button> -->
@@ -128,7 +111,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-bottom: 30px;
 
         .game {
           font-size: 13px;
@@ -256,7 +238,6 @@
 <script>
 import Reply from '@/components/Reply.vue'
 import axios from 'axios'
-import Editor from '@tinymce/tinymce-vue'
 
 export default {
   name: 'Thread',
@@ -268,9 +249,9 @@ export default {
       fileName: 'Escolher arquivo...',
       errors: [],
       replyFormStatus: false,
-      TinyMCEKey: process.env.VUE_APP_TINYMCE_KEY,
-      imagePath: process.env.VUE_APP_API + '/images/posts/',
-      avatarPath: process.env.VUE_APP_API + '/images/avatars/thumbnail_'
+      // TinyMCEKey: process.env.VUE_APP_TINYMCE_KEY,
+      imagePath: process.env.VUE_APP_IMAGE_POST + '/thumbnail_',
+      avatarPath: process.env.VUE_APP_IMAGE_USER + '/thumbnail_'
     }
   },
   mounted() {
@@ -296,7 +277,7 @@ export default {
         let formData = new FormData()
 
         if (this.file !== '') {
-          formData.append('file', this.file)
+          formData.append('image', this.file)
         }
 
         if (this.reply.description) {
@@ -307,7 +288,7 @@ export default {
           Authorization: 'Bearer ' + this.$store.state.token
         }
 
-        axios.post(process.env.VUE_APP_API + '/reply/' + this.thread._id, formData, { headers }).then( res => {
+        axios.post(process.env.VUE_APP_API + '/reply/' + this.thread.id, formData, { headers }).then( res => {
           this.thread = res.data
           this.reply = {}
           this.file = ''
@@ -341,7 +322,7 @@ export default {
   },
   components: {
     Reply,
-     'editor': Editor
+  //    'editor': Editor
   }
 }
 </script>

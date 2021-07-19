@@ -3,6 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-12 offset-lg-2 col-lg-8">
+          <h2>Novo Tópico</h2>
           <div class="thread-wrapper">
             <!-- <div class="thread-image" :style="{ 'background-image' : 'url(' + 'http://picsum.photos/1120/250' + ')'}"></div> -->
             <div class="thread-form">
@@ -23,7 +24,7 @@
                 </div>
                 <div class="form-group text-left">
                   <label for="description">Mensagem</label>
-                  <editor
+                  <!-- <editor
                     :api-key="TinyMCEKey"
                     v-model="thread.description"
                     :init="{
@@ -41,8 +42,8 @@
                         alignleft aligncenter alignright alignjustify | \
                         media | bullist numlist outdent indent | removeformat | help'
                     }"
-                  />
-                  <!-- <textarea name="description" class="form-control" id="description" v-model="thread.description" cols="30" rows="10"></textarea> -->
+                  /> -->
+                  <textarea name="description" class="form-control" id="description" v-model="thread.description" cols="30" rows="10"></textarea>
                 </div>
                 <div class="button">
                   <button type="submit" class="btn btn-default">Enviar</button>
@@ -70,6 +71,14 @@
 @import '../styles/variables.scss';
 
 .new-thread {
+  
+  h2 {
+    color: white;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+
   .thread-wrapper {
       background-color: $light-gray;
       border-radius: 10px;
@@ -140,7 +149,7 @@
 </style>
 
 <script>
-import Editor from '@tinymce/tinymce-vue'
+// import Editor from '@tinymce/tinymce-vue'
 import axios from 'axios'
 
 export default {
@@ -151,7 +160,7 @@ export default {
       file: '',
       fileName: 'Escolher arquivo...',
       errors: [],
-      TinyMCEKey: process.env.VUE_APP_TINYMCE_KEY
+      // TinyMCEKey: process.env.VUE_APP_TINYMCE_KEY
     }
   },
   methods: {
@@ -169,7 +178,7 @@ export default {
         let formData = new FormData()
 
         formData.append('title', this.thread.title)
-        formData.append('file', this.file)
+        formData.append('image', this.file)
         formData.append('description', this.thread.description)
         
         let headers = {
@@ -177,7 +186,7 @@ export default {
         }
 
         axios.post(process.env.VUE_APP_API + '/post', formData, { headers }).then( res => {
-          this.$router.push('/topico/' + res.data._id)
+          this.$router.push('/topico/' + res.data.id)
         }).catch( (err) => {
           this.errors.push(err.response.data.error)
         })
@@ -196,11 +205,11 @@ export default {
     },
     beforeDestroy() {
       // Always destroy your editor instance when it's no longer needed
-      this.editor.destroy()
+      // this.editor.destroy()
     },
   },
-  components: {
-     'editor': Editor
-  }
+  // components: {
+  //    'editor': Editor
+  // }
 }
 </script>

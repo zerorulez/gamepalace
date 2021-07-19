@@ -5,8 +5,8 @@ class user extends Model {
     super.init({
       username: DataTypes.STRING,
       email: DataTypes.STRING,
-      avatar: DataTypes.STRING,
-      avatarMimeType: DataTypes.STRING,
+      filename: DataTypes.STRING,
+      mimeType: DataTypes.STRING,
       about: DataTypes.STRING,
       password: DataTypes.STRING,
       passwordResetToken: DataTypes.STRING,

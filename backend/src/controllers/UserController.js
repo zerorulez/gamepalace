@@ -8,16 +8,13 @@ module.exports = {
     async index(req, res) {
 
         const user = await User.findOne({
+            attributes: {include: ['email']},
             where: { id: req.userId }
         })
         
         if (!user) {
             return res.status(400).json({ error: 'User not found' })
         }
-        
-        user.password = undefined
-        user.passwordResetToken = undefined
-        user.passwordResetExpires = undefined
 
         res.send(user)
 
@@ -34,19 +31,16 @@ module.exports = {
             return res.status(400).json({ error: 'User not found' })
         }
 
-        user.email = undefined
-        user.password = undefined
-        user.passwordResetToken = undefined
-        user.passwordResetExpires = undefined
-
         res.send(user)
 
     },
     async update(req, res) {
 
         const { about } = req.body
+        const file = req.file
 
         const user = await User.findOne({
+            attributes: {include: ['email']},
             where: { id: req.userId }
         })
 
@@ -54,32 +48,18 @@ module.exports = {
             return res.status(400).json({ error: 'User not found' })
         }
 
-        await user.update({ about: about })
+        if (file) {
+            var filename = req.file.filename
+            var mimeType = req.file.mimetype
 
-        user.email = undefined
-        user.password = undefined
-        user.passwordResetToken = undefined
-        user.passwordResetExpires = undefined
+            let folder = await path.resolve(__dirname, "..")
 
-        res.send(user)
-
-        // var avatar = undefined
-        // var avatarMimeType = undefined
-        
-        // if (req.file) {
-        //     avatar = req.file.filename
-        //     avatarMimeType = req.file.mimetype
-
-        //     let folder = await path.resolve(__dirname, "..")
-
-        //     sharp(req.file.path).resize(100).toFile(folder + '/images/avatars/thumbnail_' + avatar, (err, resizeImage) => {
-        //         if (err) {
-        //             return res.status(400).send({ error: "Error converting image"})
-        //         }
-        //     })
-        // }
-
-        // var confirmPassword = undefined
+            sharp(req.file.path).resize(300).toFile(folder + '/images/user/thumbnail_' + filename, (err, resizeImage) => {
+                if (err) {
+                    return res.status(400).send({ error: "Error converting image"})
+                }
+            })
+        }
 
         // if (password && newPassword) {
         //     const user = await User.findById( req.userId ).select('+password')
@@ -94,10 +74,13 @@ module.exports = {
         //     confirmPassword = newPassword
         // }
 
-        // const updatedUser = await User.findByIdAndUpdate(req.userId, {
-        //     about,
-        // }, { new: true })
+        await user.update({ 
+            about: about,
+            filename: filename,
+            mimeType: mimeType,
+        })
 
+        res.send(user)
     },
     // async delete(req, res) {
         

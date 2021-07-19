@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <h1>LOGIN</h1>
+          <h2>LOGIN</h2>
         </div>
         <div class="col-12 offset-lg-3 col-lg-6">
           <form @submit.prevent="login()">
@@ -42,7 +42,7 @@
 .login {
   text-align: center;
 
-  h1 {
+  h2 {
     color: white;
     font-weight: bold;
     margin-bottom: 30px;

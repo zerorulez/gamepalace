@@ -22,8 +22,8 @@ export default {
   name: 'Lightbox',
   data() {
     return {
-      imagePath: process.env.VUE_APP_API + '/images/posts/',
-      avatarPath: process.env.VUE_APP_API + '/images/avatars/'
+      imagePath: process.env.VUE_APP_API + '/images/post/',
+      avatarPath: process.env.VUE_APP_API + '/images/user/'
     }
   },
   methods: {

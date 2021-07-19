@@ -1,20 +1,27 @@
 <template>
   <div class="thread">
-    <div class="thread-wrapper" @click="goToThread(thread.id)">
-      <div class="thread-image-wrapper">
-        <!-- <div class="thread-image" v-if="thread.image" :style="{ 'background-image' : 'url(' + imagePath + thread.image + ')'}"></div> -->
-      </div>
-      <div class="thread-content">
+    <div class="thread-wrapper">
+      <!-- <div class="thread-image-wrapper">
+      </div> -->
+      <div class="thread-content" @click="goToThread(thread.id)">
         <div class="thread-header">
           <div class="header-wrapper">
             <!-- <span class="game text-blue">Streets of Rage</span> -->
-            <h2>{{ thread.title }}</h2>
-            <p>{{  thread.description }}</p>
+            <h2 class="mb-4">{{ thread.title }}</h2>
+            <!-- <div class="carousel-wrapper">
+              <carousel :per-page="1" :adjustableHeight="true" :centerMode="true" :paginationPosition="'bottom-overlay'">
+                <slide class="thread-image" v-for="(image, index) in thread.images" :key="index">
+                  <img :src="getImagePath(image.filename)" :alt="image.filename" class="img-fluid">
+                </slide>
+              </carousel>
+            </div> -->
+            <img v-for="(image, index) in thread.images" :key="index" :src="imagePath + image.filename" :alt="image.filename" class="img-fluid">
+            <p class="mt-4">{{  thread.description }}</p>
           </div>
           <div class="user">
             <span class="username" v-if="thread.user">{{ thread.user.username }}</span>
-            <!-- <div class="avatar-image" v-if="thread.user && thread.user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + thread.user.avatar + ')'}"></div> -->
-            <div class="avatar-image default-avatar" v-if="thread.user && !thread.user.avatar"></div>
+            <div class="avatar-image" v-if="thread.user && thread.user.filename" :style="{ 'background-image' : 'url(' + avatarPath + thread.user.filename + ')'}"></div>
+            <div class="avatar-image default-avatar" v-if="thread.user && !thread.user.filename"></div>
           </div>
         </div>
         <div class="thread-footer">
@@ -32,13 +39,18 @@ export default {
   props: ['thread'],
   data() {
     return {
-      imagePath: process.env.VUE_APP_API + '/images/posts/thumbnail_',
-      avatarPath: process.env.VUE_APP_API + '/images/avatars/thumbnail_'
+      imagePath: process.env.VUE_APP_IMAGE_POST + '/thumbnail_',
+      avatarPath: process.env.VUE_APP_IMAGE_USER + '/thumbnail_'
     }
+  },
+  mounted() {
   },
   methods: {
     goToThread(id) {
       this.$router.push('/topico/' + id)
+    },
+    getImagePath(filename) {
+      return this.imagePath + filename
     }
   }
 }
@@ -57,41 +69,35 @@ export default {
     border-radius: 10px;
     display: flex;
     justify-content: space-between;
-    cursor: pointer;
     transition: all .2s ease-in-out;
 
     &:hover {
-      margin-left: 7.5px;
-      margin-right: -7.5px;
       box-shadow: 3px 3px 5px rgba(black, .5);
     }
 
-    .thread-image-wrapper {
+    /* .thread-image-wrapper {
       border-radius: 10px 0 0 10px;
       overflow: hidden;
       display: flex;
+      max-width: 300px;
       
       .thread-image {
-        width: 100px;
         height: auto;
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;
-
-        @media (min-width: 992px) {
-          width: 300px;
-        }
       }
-    }
+    } */
 
     .thread-content {
+      cursor: pointer;
       padding: 15px;
       width: 100%;
 
       .thread-header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
 
         .game {
           font-size: 13px;

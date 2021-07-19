@@ -14,8 +14,8 @@
           <div class="form">
             <div class="avatar-wrapper">
               <div class="cover"></div>
-              <div class="avatar" @click="openImage()" v-if="user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + user.avatar + ')'}"></div>
-              <div class="avatar default-avatar" v-if="!user.avatar"></div>
+              <div class="avatar" @click="openImage()" v-if="user.filename" :style="{ 'background-image' : 'url(' + avatarPath + user.filename + ')'}"></div>
+              <div class="avatar default-avatar" v-if="!user.filename"></div>
               <h1 class="text-center">{{ user.username }}</h1>
               <p v-if="user.createdAt">Registro: {{ user.createdAt | moment("DD/MM/YYYY") }}</p>
               <button @click="$router.go(-1)" class="btn btn-default">Voltar</button>
@@ -77,7 +77,7 @@ export default {
   data() {
     return {
       user: {},
-      avatarPath: process.env.VUE_APP_API + '/images/avatars/'
+      avatarPath: process.env.VUE_APP_API + '/images/user/'
     }
   },
   mounted() {
@@ -89,7 +89,7 @@ export default {
   },
   methods: {
     openImage() {
-      this.$store.commit('setLightbox', { image: this.user.avatar, type: 'avatar' })
+      this.$store.commit('setLightbox', { image: this.user.filename, type: 'user' })
       this.$store.commit('toogleLightbox')
     }
   },

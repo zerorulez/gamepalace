@@ -11,6 +11,10 @@ Vue.use(require('vue-moment'), {
   moment
 })
 
+import VueCarousel from 'vue-carousel';
+
+Vue.use(VueCarousel);
+
 Vue.config.productionTip = false
 
 new Vue({

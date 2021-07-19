@@ -14,10 +14,10 @@ module.exports = {
       email: {
         type: Sequelize.STRING
       },
-      avatar: {
+      filename: {
         type: Sequelize.STRING
       },
-      avatarMimeType: {
+      mimeType: {
         type: Sequelize.STRING
       },
       about: {

@@ -38,8 +38,6 @@ module.exports = {
             return res.status(400).json({ error: 'Post not found' })
         }
 
-        // post.userId = undefined
-
         return res.json(post)
 
     },
@@ -58,9 +56,21 @@ module.exports = {
             return res.status(400).send({ error: "Error creating post, try again" })
         }
 
-        files.map( file => {
-            file.postId = post.id
-        })
+        if (files) {
+            let folder = await path.resolve(__dirname, "..")
+
+            files.map( file => {
+                // coloca o post id dentro de cada imagem para subir no banco
+                file.postId = post.id
+
+                // cria a thumbnail
+                sharp(file.path).resize(300).toFile(folder + '/images/post/thumbnail_' + file.filename, (err, resizeImage) => {
+                    if (err) {
+                        return res.status(400).send({ error: "Error converting image"})
+                    }
+                })
+            })
+        }
 
         const images = await Image.bulkCreate(files)
 

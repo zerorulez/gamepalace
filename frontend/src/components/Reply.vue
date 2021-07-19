@@ -4,15 +4,16 @@
       <!-- <div class="reply-image" @click="openImage()" v-if="reply.image" :style="{ 'background-image' : 'url(' + imagePath + reply.image + ')'}"></div> -->
       <div class="reply-content">
         <div class="reply-header">
-          <p v-if="reply.description" v-html="reply.description"></p>
+          <img v-for="(image, index) in reply.images" :key="index" :src="imagePath + image.filename" :alt="image.filename" class="img-fluid">
+          <p class="mt-4" v-if="reply.description">{{ reply.description }}</p>
           <img @click="openImage()" v-if="reply.image" :src="imagePath + reply.image" :alt="reply.description" class="img-fluid mt-4 reply-image-max">
         </div>
         <div class="reply-footer pt-2">
           <span class="date" v-if="reply.createdAt">{{ reply.createdAt | moment("H:mm - D MMMM") }}</span>
           <div @click="goToProfile(reply.user._id)" class="user">
             <span class="username" v-if="reply.user">{{ reply.user.username }}</span>
-            <div class="avatar-image" v-if="reply.user && reply.user.avatar" :style="{ 'background-image' : 'url(' + avatarPath + reply.user.avatar + ')'}"></div>
-            <div class="avatar-image default-avatar" v-if="reply.user && !reply.user.avatar"></div>
+            <div class="avatar-image" v-if="reply.user && reply.user.filename" :style="{ 'background-image' : 'url(' + avatarPath + reply.user.filename + ')'}"></div>
+            <div class="avatar-image default-avatar" v-if="reply.user && !reply.user.filename"></div>
           </div>
         </div>
       </div>
@@ -27,9 +28,14 @@
 
 .reply {
   .reply-wrapper {
-      background-color: $light-gray;
-      border-radius: 10px;
-      margin-bottom: 15px;
+    background-color: $light-gray;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    transition: all .2s ease-in-out;
+
+    &:hover {
+      box-shadow: 3px 3px 5px rgba(black, .5);
+    }
 
     .reply-image {
       border-radius: 10px 10px 0 0;
@@ -102,8 +108,8 @@ export default {
   props: ['reply'],
   data() {
     return {
-      imagePath: process.env.VUE_APP_API + '/images/posts/',
-      avatarPath: process.env.VUE_APP_API + '/images/avatars/thumbnail_'
+      imagePath: process.env.VUE_APP_IMAGE_POST + '/thumbnail_',
+      avatarPath: process.env.VUE_APP_IMAGE_USER + '/thumbnail_'
     }
   },
   methods: {

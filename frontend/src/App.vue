@@ -3,7 +3,9 @@
     <ModalHome v-if="!$store.state.firstTime" />
     <Lightbox v-if="$store.state.lightbox.active" />
     <Header />
-    <router-view/>
+    <div class="app-wrapper">
+      <router-view/>
+    </div>
     <Footer />
   </div>
 </template>
@@ -11,7 +13,6 @@
 <style lang="scss">
 @import 'styles/variables.scss';
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
 
 #app {
   font-family: 'Montserrat', sans-serif;
@@ -26,7 +27,7 @@
   overflow-wrap: anywhere;
 
   // SKIN TINYMCE
-  .tox .tox-edit-area__iframe {
+  /* .tox .tox-edit-area__iframe {
     background-color: inherit;
   }
 
@@ -73,16 +74,16 @@
     svg {
       fill: $dark-gray;
     }
-  }
+  } */
 
   // FIM SKIN TINYMCE
 
   // BORDA EMBED THREAD
-  .thread-description {
+  /* .thread-description {
     iframe {
       border: 0;
     }
-  }
+  } */
   // FIM BORDA EMBED THREAD
 
   input {
@@ -101,6 +102,10 @@
 
   a {
     color: $blue;
+  }
+
+  .app-wrapper {
+    flex-grow: 1;
   }
 
   .text-blue {
