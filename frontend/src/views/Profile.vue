@@ -241,7 +241,7 @@ export default {
     },
     logoff() {
       localStorage.removeItem('token')
-      this.$store.commit('setToken')
+      this.$store.commit('setToken', '')
       this.$router.push('/login')
     },
     openImage() {

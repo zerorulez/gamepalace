@@ -36,7 +36,6 @@ export default {
   },
   methods: {
     toogleModal() {
-      localStorage.setItem('firstTime', true)
       this.$store.commit('toogleModal')
     }
   }

@@ -31,13 +31,13 @@
           <div class="replies">
             <div class="replies-header">
               <h2>Respostas</h2>
-              <div class="reply-toogle" @click="toggleFormStatus()">
+              <div class="reply-toogle" @click="toggleFormStatus()" v-if="$store.state.token">
                 <strong class="pr-2">Responder</strong>
                 <img src="../assets/reply-icon.svg" alt="reply icon" class="img-fluid">
               </div>
             </div>
 
-            <div v-if="$store.state.token && replyFormStatus" class="reply-form">
+            <div v-if="replyFormStatus" class="reply-form">
               <form @submit.prevent="newReply()" action="">
                 <div class="form-group text-left">
                   <label for="avatar">Imagem</label>
@@ -293,10 +293,9 @@ export default {
           this.reply = {}
           this.file = ''
           this.fileName = 'Escolher arquivo...'
+          this.replyFormStatus = false
           
-          setTimeout(() => {
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
-          }, 250);
+          window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
 
         }).catch( (err) => {
           this.errors.push(err.response.data.error)

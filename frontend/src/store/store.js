@@ -14,8 +14,9 @@ export default new Vuex.Store({
         firstTime: localStorage.getItem('firstTime') == undefined ? false : true
     },
     mutations: {
-        setToken (state) {
-            state.token = localStorage.getItem('token')
+        setToken (state, token) {
+            localStorage.setItem('token', token)
+            state.token = token
         },
         setLightbox(state, payload) {
             state.lightbox.image = payload.image
@@ -25,7 +26,8 @@ export default new Vuex.Store({
             state.lightbox.active = !state.lightbox.active
         },
         toogleModal(state) {
-            state.firstTime = localStorage.getItem('firstTime')
+            localStorage.setItem('firstTime', true)
+            state.firstTime = true
         }
     }
 })

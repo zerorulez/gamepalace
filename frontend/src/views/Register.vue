@@ -109,8 +109,7 @@ export default {
 
       if (!this.errors.length) {
         axios.post(process.env.VUE_APP_API + '/signup', this.user).then( res => {
-          localStorage.setItem('token', res.data.token)
-          this.$store.commit('setToken')
+          this.$store.commit('setToken', res.data.token)
           this.$router.push('/perfil')
         }).catch( err => {
           this.errors.push(err.response.data.error)
